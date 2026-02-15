@@ -1,7 +1,6 @@
-import Hero from '../components/Hero';
+import HeroCarousel from '../components/HeroCarousel';
 import MissionSection from '../components/MissionSection';
 import VisionSection from '../components/VisionSection';
-import TransformationSection from '../components/TransformationSection';
 import ExamplesSection from '../components/ExamplesSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import CTASection from '../components/CTASection';
@@ -11,14 +10,13 @@ import NewsletterSignup from '../components/NewsletterSignup';
 export default function Home() {
   return (
     <>
-      <Hero />
+      <HeroCarousel />
       <MissionSection />
       <VisionSection />
-      <TransformationSection />
       <ExamplesSection />
       <TestimonialsSection />
       <CTASection />
-      <SectionWrapper dark>
+      <SectionWrapper dark id="newsletter">
         <div className="text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Stay in the Loop

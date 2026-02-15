@@ -6,8 +6,11 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Events from './pages/Events';
 import Resources from './pages/Resources';
-import Partners from './pages/Partners';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Donate from './pages/Donate';
+import DonateSuccess from './pages/DonateSuccess';
+import DonateCancel from './pages/DonateCancel';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,8 +31,11 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/events" element={<Events />} />
           <Route path="/resources" element={<Resources />} />
-          <Route path="/partners" element={<Partners />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/donate/success" element={<DonateSuccess />} />
+          <Route path="/donate/cancel" element={<DonateCancel />} />
         </Routes>
       </main>
       <Footer />

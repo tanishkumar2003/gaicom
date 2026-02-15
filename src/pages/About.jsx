@@ -1,18 +1,68 @@
 import SectionWrapper from '../components/SectionWrapper';
 import TeamSection from '../components/TeamSection';
+import GaicomLogo from '../components/GaicomLogo';
+
+const values = [
+  {
+    title: 'Accessibility',
+    icon: '\u2316',
+    desc: 'AI education should be available to everyone, regardless of background or resources.',
+  },
+  {
+    title: 'Community',
+    icon: '\u2691',
+    desc: 'We grow stronger when we learn and build together as a community.',
+  },
+  {
+    title: 'Responsibility',
+    icon: '\u2696',
+    desc: 'AI should be adopted thoughtfully, ethically, and with full transparency.',
+  },
+  {
+    title: 'Empowerment',
+    icon: '\u2B06',
+    desc: 'Our goal is to give people the skills and confidence to use AI on their own terms.',
+  },
+];
 
 export default function About() {
   return (
     <>
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-dark to-navy" aria-hidden="true" />
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <p className="text-accent text-sm font-semibold tracking-widest uppercase mb-3">
+      {/* Hero — Our Story */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-navy-dark via-navy to-navy-light" aria-hidden="true" />
+
+        {/* Radial glow behind heading */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-15 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(79,141,253,0.35) 0%, transparent 70%)' }}
+          aria-hidden="true"
+        />
+
+        {/* Abstract AI grid pattern */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern id="about-grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+              <circle cx="30" cy="30" r="1.5" fill="currentColor" />
+              <line x1="30" y1="0" x2="30" y2="60" stroke="currentColor" strokeWidth="0.3" />
+              <line x1="0" y1="30" x2="60" y2="30" stroke="currentColor" strokeWidth="0.3" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#about-grid)" />
+        </svg>
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center about-fade-in">
+          <GaicomLogo size={48} className="text-accent mx-auto mb-5" />
+          <p className="text-accent text-sm font-semibold tracking-widest uppercase mb-4">
             About GAICOM
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
             Our Story
           </h1>
+          <div className="w-16 h-1 bg-accent rounded-full mx-auto mb-8" aria-hidden="true" />
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
             Founded in Livingston, NJ, GAICOM is a nonprofit dedicated to making
             generative AI accessible, understandable, and beneficial for every community.
@@ -20,13 +70,14 @@ export default function About() {
         </div>
       </section>
 
+      {/* Why We Exist */}
       <SectionWrapper>
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-white mb-6">Why We Exist</h2>
-          <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
+        <div className="max-w-3xl mx-auto about-fade-in">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">Why We Exist</h2>
+          <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
             <p>
               Generative AI is transforming every industry and aspect of daily life. Yet
-              many communities—particularly those in underserved areas—lack the resources,
+              many communities — particularly those in underserved areas — lack the resources,
               training, and support needed to benefit from these advances.
             </p>
             <p>
@@ -43,31 +94,46 @@ export default function About() {
         </div>
       </SectionWrapper>
 
+      {/* Our Values */}
       <SectionWrapper dark>
-        <div className="max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold text-white mb-6">Our Values</h2>
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Our Values</h2>
+            <p className="text-gray-400 max-w-xl mx-auto">
+              The principles that guide everything we do at GAICOM.
+            </p>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {[
-              { title: 'Accessibility', desc: 'AI education should be available to everyone, regardless of background or resources.' },
-              { title: 'Community', desc: 'We grow stronger when we learn and build together as a community.' },
-              { title: 'Responsibility', desc: 'AI should be adopted thoughtfully, ethically, and with full transparency.' },
-              { title: 'Empowerment', desc: 'Our goal is to give people the skills and confidence to use AI on their own terms.' },
-            ].map((value) => (
-              <div key={value.title} className="bg-surface rounded-xl border border-white/5 p-6">
-                <h3 className="text-lg font-semibold text-accent mb-2">{value.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{value.desc}</p>
+            {values.map((value, i) => (
+              <div
+                key={value.title}
+                className="group relative bg-gradient-to-br from-surface to-surface-light rounded-xl border-l-4 border-accent/60 border-t border-r border-b border-t-white/5 border-r-white/5 border-b-white/5 p-6 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent/5 hover:border-l-accent transition-all duration-300"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl text-accent/70 group-hover:text-accent transition-colors duration-300 mt-0.5 shrink-0">
+                    {value.icon}
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-accent transition-colors duration-300">
+                      {value.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{value.desc}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </SectionWrapper>
 
+      {/* Meet Our Team */}
       <SectionWrapper>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">Meet Our Team</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Meet Our Team</h2>
           <p className="text-gray-400 max-w-xl mx-auto">
-            The people behind GAICOM bring together expertise in AI, education,
-            community development, and technology.
+            The people behind GAICOM bring together expertise in AI, finance,
+            technology, design, and community development.
           </p>
         </div>
         <TeamSection />

@@ -1,29 +1,30 @@
 import { Link } from 'react-router-dom';
-import NewsletterSignup from './NewsletterSignup';
+import GaicomLogo from './GaicomLogo';
 
 const quickLinks = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Events', to: '/events' },
   { label: 'Resources', to: '/resources' },
-  { label: 'Partners', to: '/partners' },
+  { label: 'Blog', to: '/blog' },
   { label: 'Donate', to: '/donate' },
 ];
 
 const socialLinks = [
   { label: 'Twitter', icon: 'X' },
   { label: 'LinkedIn', icon: 'in' },
-  { label: 'YouTube', icon: '▶' },
-  { label: 'GitHub', icon: '⌨' },
+  { label: 'YouTube', icon: '\u25B6' },
+  { label: 'GitHub', icon: '\u2328' },
 ];
 
 export default function Footer() {
   return (
     <footer className="bg-navy-dark border-t border-white/5" aria-label="Site footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          <div className="lg:col-span-1">
-            <Link to="/" className="inline-block mb-4" aria-label="GAICOM Home">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+          <div>
+            <Link to="/" className="inline-flex items-center gap-2 mb-4" aria-label="GAICOM Home">
+              <GaicomLogo size={34} className="text-white" />
               <span className="text-2xl font-bold text-white tracking-tight">
                 GAI<span className="text-accent">COM</span>
               </span>
@@ -72,8 +73,8 @@ export default function Footer() {
                 <svg className="w-4 h-4 mt-0.5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:info@gaicom.org" className="hover:text-accent transition-colors duration-200">
-                  info@gaicom.org
+                <a href="mailto:gaicomnj@gmail.com" className="hover:text-accent transition-colors duration-200">
+                  gaicomnj@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -84,16 +85,6 @@ export default function Footer() {
                 <span>Livingston, NJ</span>
               </li>
             </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Newsletter
-            </h3>
-            <p className="text-gray-400 text-sm mb-4">
-              Stay updated with the latest in generative AI.
-            </p>
-            <NewsletterSignup compact />
           </div>
         </div>
 

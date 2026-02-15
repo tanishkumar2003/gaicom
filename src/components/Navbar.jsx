@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Button from './Button';
+import GaicomLogo from './GaicomLogo';
 
 const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'About', to: '/about' },
   { label: 'Events', to: '/events' },
   { label: 'Resources', to: '/resources' },
-  { label: 'Partners', to: '/partners' },
-  { label: 'Donate', to: '/donate' },
+  { label: 'Blog', to: '/blog' },
 ];
 
 export default function Navbar() {
@@ -80,6 +80,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="GAICOM Home">
+            <GaicomLogo size={32} className="text-white" />
             <span className="text-xl md:text-2xl font-bold text-white tracking-tight">
               GAI<span className="text-accent">COM</span>
             </span>
@@ -95,7 +96,7 @@ export default function Navbar() {
 
           <div className="hidden md:block">
             <Button to="/donate" size="small">
-              Sign Up
+              Donate
             </Button>
           </div>
 
@@ -123,14 +124,16 @@ export default function Navbar() {
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`md:hidden fixed inset-0 top-16 bg-navy-dark/98 backdrop-blur-md transition-all duration-300 ${
-          mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          scrolled ? 'bg-navy/95 backdrop-blur-md' : 'bg-navy-dark/98 backdrop-blur-md'
+        } ${
+          mobileOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation"
       >
-        <div className="flex flex-col px-6 pt-8 pb-6 gap-2">
+        <div className="flex flex-col px-6 pt-4 pb-6 gap-2">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
@@ -148,7 +151,7 @@ export default function Navbar() {
           ))}
           <div className="pt-4 mt-4 border-t border-white/10">
             <Button to="/donate" fullWidth onClick={() => setMobileOpen(false)}>
-              Sign Up
+              Donate
             </Button>
           </div>
         </div>

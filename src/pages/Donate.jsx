@@ -1,5 +1,6 @@
 import SectionWrapper from '../components/SectionWrapper';
 import DonateInfo from '../components/DonateInfo';
+import GaicomLogo from '../components/GaicomLogo';
 
 export default function Donate() {
   return (
@@ -15,6 +16,7 @@ export default function Donate() {
           aria-hidden="true"
         />
         <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <GaicomLogo size={44} className="text-accent mx-auto mb-4" />
           <p className="text-accent text-sm font-semibold tracking-widest uppercase mb-3">
             Support Our Mission
           </p>

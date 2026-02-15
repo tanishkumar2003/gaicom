@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#111827"/>
+  <rect x="300" y="150" width="200" height="150" rx="16" fill="#4F8DFD" opacity="0.12"/>
+  <circle cx="400" cy="200" r="30" fill="#4F8DFD" opacity="0.2"/>
+  <path d="M385 200 L415 200 M400 185 L400 215" stroke="#4F8DFD" stroke-width="2" opacity="0.5"/>
+  <text x="400" y="275" fill="#6BA3FF" font-size="14" text-anchor="middle" opacity="0.4" font-family="sans-serif">Blog Image</text>
+</svg>

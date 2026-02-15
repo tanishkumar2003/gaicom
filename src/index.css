@@ -37,3 +37,41 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* Vision section animations */
+.vision-pulse {
+  animation: visionPulse 4s ease-in-out infinite;
+}
+
+.vision-node {
+  animation: visionNodeGlow 3s ease-in-out infinite;
+}
+
+.vision-line {
+  animation: visionLineFade 4s ease-in-out infinite;
+}
+
+@keyframes visionPulse {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.15); }
+}
+
+@keyframes visionNodeGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes visionLineFade {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
+}
+
+/* About page fade-in */
+.about-fade-in {
+  animation: aboutFadeUp 0.8s ease-out both;
+}
+
+@keyframes aboutFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

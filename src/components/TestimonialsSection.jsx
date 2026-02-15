@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import SectionWrapper from './SectionWrapper';
 
 const testimonials = [
@@ -23,10 +23,42 @@ const testimonials = [
     role: 'Executive Director',
     org: 'Community Impact Alliance',
   },
+  {
+    quote:
+      'I used to think AI was only for tech companies. After attending a GAICOM workshop, I built an AI chatbot for our neighborhood association that handles event signups and FAQs. It saved us hours every week.',
+    author: 'Carlos Mendez',
+    role: 'Community Organizer',
+    org: 'Eastside Neighborhood Council',
+  },
+  {
+    quote:
+      "GAICOM's high school program gave me the confidence to pursue computer science in college. Learning how to use AI tools before graduation put me ahead of my peers.",
+    author: 'Sophia Nguyen',
+    role: 'Student',
+    org: 'Livingston High School',
+  },
+  {
+    quote:
+      'As a researcher, I spend less time on literature reviews and more time on original analysis thanks to the AI workflows I learned through GAICOM. It has genuinely changed how I work.',
+    author: 'Dr. Robert Okafor',
+    role: 'Research Scientist',
+    org: 'Rutgers University',
+  },
 ];
 
 export default function TestimonialsSection() {
   const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  const next = useCallback(() => {
+    setActive((prev) => (prev + 1) % testimonials.length);
+  }, []);
+
+  useEffect(() => {
+    if (paused) return;
+    const timer = setInterval(next, 6000);
+    return () => clearInterval(timer);
+  }, [paused, next]);
 
   return (
     <SectionWrapper id="testimonials">
@@ -39,7 +71,13 @@ export default function TestimonialsSection() {
         </h2>
       </div>
 
-      <div className="max-w-3xl mx-auto">
+      <div
+        className="max-w-3xl mx-auto"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={() => setPaused(false)}
+      >
         <div className="relative bg-surface rounded-2xl border border-white/5 p-8 md:p-12">
           <svg
             className="absolute top-6 left-6 w-10 h-10 text-accent/20"
