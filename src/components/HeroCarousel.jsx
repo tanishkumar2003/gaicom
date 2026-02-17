@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import Button from './Button';
 import GaicomLogo from './GaicomLogo';
+import { client } from '../lib/sanityClient';
+import { HERO_SLIDES_QUERY, HOME_PAGE_QUERY } from '../lib/sanityQueries';
 
-const slides = [
+const FALLBACK_SLIDES = [
   {
     image: '/hero-1.jpg',
     alt: 'Abstract AI network visualization with connected nodes representing community connections',
@@ -21,9 +23,45 @@ const slides = [
   },
 ];
 
+const FALLBACK_HERO = {
+  heroTitle: 'Empowering Communities Through AI',
+  heroSubtitle:
+    'GAICOM bridges the gap between cutting-edge generative AI and the communities that stand to benefit the most. We provide education, resources, and hands-on support to make AI accessible for everyone.',
+  heroCtaText: 'Sign Up for Newsletter',
+};
+
 export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [slides, setSlides] = useState(FALLBACK_SLIDES);
+  const [heroText, setHeroText] = useState(FALLBACK_HERO);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [slidesData, homeData] = await Promise.all([
+          client.fetch(HERO_SLIDES_QUERY),
+          client.fetch(HOME_PAGE_QUERY),
+        ]);
+        if (slidesData && slidesData.length > 0) {
+          setSlides(slidesData.map((s) => ({ image: s.imageUrl, alt: s.alt || '' })));
+        }
+        if (homeData) {
+          setHeroText({
+            heroTitle: homeData.heroTitle || FALLBACK_HERO.heroTitle,
+            heroSubtitle: homeData.heroSubtitle || FALLBACK_HERO.heroSubtitle,
+            heroCtaText: homeData.heroCtaText || FALLBACK_HERO.heroCtaText,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch hero data from Sanity:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
   const goTo = useCallback((index) => {
     setCurrent(index);
@@ -31,17 +69,41 @@ export default function HeroCarousel() {
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % slides.length);
-  }, []);
+  }, [slides.length]);
 
   const prev = useCallback(() => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
-  }, []);
+  }, [slides.length]);
 
   useEffect(() => {
     if (paused) return;
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
   }, [paused, next]);
+
+  // Parse hero title to add accent styling to "Through AI"
+  const renderHeroTitle = () => {
+    const title = heroText.heroTitle;
+    const accentIndex = title.indexOf('Through AI');
+    if (accentIndex !== -1) {
+      return (
+        <>
+          {title.substring(0, accentIndex)}
+          <span className="text-accent">Through AI</span>
+          {title.substring(accentIndex + 'Through AI'.length)}
+        </>
+      );
+    }
+    return title;
+  };
+
+  if (loading) {
+    return (
+      <section className="relative w-full h-screen min-h-[600px] overflow-hidden bg-navy flex items-center justify-center">
+        <p className="text-gray-400">Loading...</p>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -81,20 +143,17 @@ export default function HeroCarousel() {
             </p>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
-            Empowering Communities{' '}
-            <span className="text-accent">Through AI</span>
+            {renderHeroTitle()}
           </h1>
           <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-10 leading-relaxed">
-            GAICOM bridges the gap between cutting-edge generative AI and the communities
-            that stand to benefit the most. We provide education, resources, and hands-on
-            support to make AI accessible for everyone.
+            {heroText.heroSubtitle}
           </p>
           <Button
             size="large"
             className="w-full sm:w-auto"
             onClick={() => document.getElementById('newsletter')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            Sign Up for Newsletter
+            {heroText.heroCtaText}
           </Button>
         </div>
       </div>

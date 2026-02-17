@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import SectionWrapper from './SectionWrapper';
 import Card from './Card';
+import { client } from '../lib/sanityClient';
+import { HOME_PAGE_QUERY } from '../lib/sanityQueries';
 
 function IconCommunity() {
   return (
@@ -33,7 +36,14 @@ function IconBusiness() {
   );
 }
 
-const audiences = [
+const ICON_MAP = {
+  'Local Communities': <IconCommunity />,
+  'Professionals': <IconProfessional />,
+  'High School Students': <IconStudent />,
+  'Small Businesses': <IconBusiness />,
+};
+
+const FALLBACK_AUDIENCES = [
   {
     icon: <IconCommunity />,
     title: 'Local Communities',
@@ -60,7 +70,44 @@ const audiences = [
   },
 ];
 
+const FALLBACK_MISSION = {
+  missionHeading: 'AI for Every Community',
+  missionSubheading:
+    'We believe generative AI should be accessible, understandable, and beneficial for all. GAICOM provides the education, tools, and support communities need to thrive in an AI-driven world.',
+};
+
 export default function MissionSection() {
+  const [audiences, setAudiences] = useState(FALLBACK_AUDIENCES);
+  const [mission, setMission] = useState(FALLBACK_MISSION);
+
+  useEffect(() => {
+    async function fetchMission() {
+      try {
+        const data = await client.fetch(HOME_PAGE_QUERY);
+        if (data) {
+          if (data.missionHeading || data.missionSubheading) {
+            setMission({
+              missionHeading: data.missionHeading || FALLBACK_MISSION.missionHeading,
+              missionSubheading: data.missionSubheading || FALLBACK_MISSION.missionSubheading,
+            });
+          }
+          if (data.missionAudiences && data.missionAudiences.length > 0) {
+            setAudiences(
+              data.missionAudiences.map((a) => ({
+                icon: ICON_MAP[a.title] || <IconCommunity />,
+                title: a.title,
+                description: a.description,
+              }))
+            );
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch mission data from Sanity:', err);
+      }
+    }
+    fetchMission();
+  }, []);
+
   return (
     <SectionWrapper id="mission">
       <div className="text-center mb-12 md:mb-16">
@@ -68,12 +115,10 @@ export default function MissionSection() {
           Our Mission
         </p>
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-          AI for Every Community
+          {mission.missionHeading}
         </h2>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-          We believe generative AI should be accessible, understandable, and beneficial for all.
-          GAICOM provides the education, tools, and support communities need to thrive in an
-          AI-driven world.
+          {mission.missionSubheading}
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

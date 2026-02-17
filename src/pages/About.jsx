@@ -1,8 +1,11 @@
+import { useState, useEffect } from 'react';
 import SectionWrapper from '../components/SectionWrapper';
 import TeamSection from '../components/TeamSection';
 import GaicomLogo from '../components/GaicomLogo';
+import { client } from '../lib/sanityClient';
+import { ABOUT_PAGE_QUERY } from '../lib/sanityQueries';
 
-const values = [
+const FALLBACK_VALUES = [
   {
     title: 'Accessibility',
     icon: '\u2316',
@@ -25,7 +28,57 @@ const values = [
   },
 ];
 
+const FALLBACK_ABOUT = {
+  heroHeading: 'Our Story',
+  heroSubheading:
+    'Founded in Livingston, NJ, GAICOM is a nonprofit dedicated to making generative AI accessible, understandable, and beneficial for every community.',
+  storyHeading: 'Why We Exist',
+  storyParagraphs: [
+    'Generative AI is transforming every industry and aspect of daily life. Yet many communities \u2014 particularly those in underserved areas \u2014 lack the resources, training, and support needed to benefit from these advances.',
+    'GAICOM was founded to bridge this gap. We believe that AI literacy is the new digital literacy, and that everyone deserves access to the tools and knowledge that will shape our collective future.',
+    'Our programs bring hands-on AI education to educators, small business owners, nonprofit leaders, and individuals. We provide workshops, curated resources, and a supportive community where people can learn, experiment, and grow together.',
+  ],
+  valuesHeading: 'Our Values',
+  valuesSubheading: 'The principles that guide everything we do at GAICOM.',
+};
+
 export default function About() {
+  const [values, setValues] = useState(FALLBACK_VALUES);
+  const [about, setAbout] = useState(FALLBACK_ABOUT);
+
+  useEffect(() => {
+    async function fetchAbout() {
+      try {
+        const data = await client.fetch(ABOUT_PAGE_QUERY);
+        if (data) {
+          setAbout({
+            heroHeading: data.heroHeading || FALLBACK_ABOUT.heroHeading,
+            heroSubheading: data.heroSubheading || FALLBACK_ABOUT.heroSubheading,
+            storyHeading: data.storyHeading || FALLBACK_ABOUT.storyHeading,
+            storyParagraphs:
+              data.storyParagraphs && data.storyParagraphs.length > 0
+                ? data.storyParagraphs
+                : FALLBACK_ABOUT.storyParagraphs,
+            valuesHeading: data.valuesHeading || FALLBACK_ABOUT.valuesHeading,
+            valuesSubheading: data.valuesSubheading || FALLBACK_ABOUT.valuesSubheading,
+          });
+          if (data.values && data.values.length > 0) {
+            setValues(
+              data.values.map((v) => ({
+                title: v.title,
+                icon: v.icon || '',
+                desc: v.description,
+              }))
+            );
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch about page from Sanity:', err);
+      }
+    }
+    fetchAbout();
+  }, []);
+
   return (
     <>
       {/* Hero — Our Story */}
@@ -60,12 +113,11 @@ export default function About() {
             About GAICOM
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Our Story
+            {about.heroHeading}
           </h1>
           <div className="w-16 h-1 bg-accent rounded-full mx-auto mb-8" aria-hidden="true" />
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Founded in Livingston, NJ, GAICOM is a nonprofit dedicated to making
-            generative AI accessible, understandable, and beneficial for every community.
+            {about.heroSubheading}
           </p>
         </div>
       </section>
@@ -73,23 +125,11 @@ export default function About() {
       {/* Why We Exist */}
       <SectionWrapper>
         <div className="max-w-3xl mx-auto about-fade-in">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">Why We Exist</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-8">{about.storyHeading}</h2>
           <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
-            <p>
-              Generative AI is transforming every industry and aspect of daily life. Yet
-              many communities — particularly those in underserved areas — lack the resources,
-              training, and support needed to benefit from these advances.
-            </p>
-            <p>
-              GAICOM was founded to bridge this gap. We believe that AI literacy is the
-              new digital literacy, and that everyone deserves access to the tools and
-              knowledge that will shape our collective future.
-            </p>
-            <p>
-              Our programs bring hands-on AI education to educators, small business owners,
-              nonprofit leaders, and individuals. We provide workshops, curated resources,
-              and a supportive community where people can learn, experiment, and grow together.
-            </p>
+            {about.storyParagraphs.map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
           </div>
         </div>
       </SectionWrapper>
@@ -98,9 +138,9 @@ export default function About() {
       <SectionWrapper dark>
         <div className="max-w-4xl mx-auto mb-12">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Our Values</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{about.valuesHeading}</h2>
             <p className="text-gray-400 max-w-xl mx-auto">
-              The principles that guide everything we do at GAICOM.
+              {about.valuesSubheading}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

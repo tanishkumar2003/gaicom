@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import SectionWrapper from './SectionWrapper';
+import { client } from '../lib/sanityClient';
+import { TESTIMONIALS_QUERY } from '../lib/sanityQueries';
 
-const testimonials = [
+const FALLBACK_TESTIMONIALS = [
   {
     quote:
       'GAICOM opened our eyes to what AI can do for our school district. Our teachers now feel confident integrating AI tools into their lesson plans.',
@@ -49,10 +51,32 @@ const testimonials = [
 export default function TestimonialsSection() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [testimonials, setTestimonials] = useState(FALLBACK_TESTIMONIALS);
+
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const data = await client.fetch(TESTIMONIALS_QUERY);
+        if (data && data.length > 0) {
+          setTestimonials(
+            data.map((t) => ({
+              quote: t.quote,
+              author: t.author,
+              role: t.role,
+              org: t.organization,
+            }))
+          );
+        }
+      } catch (err) {
+        console.error('Failed to fetch testimonials from Sanity:', err);
+      }
+    }
+    fetchTestimonials();
+  }, []);
 
   const next = useCallback(() => {
     setActive((prev) => (prev + 1) % testimonials.length);
-  }, []);
+  }, [testimonials.length]);
 
   useEffect(() => {
     if (paused) return;

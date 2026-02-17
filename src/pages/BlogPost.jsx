@@ -1,10 +1,74 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { PortableText } from '@portabletext/react';
 import { getBlogBySlug } from '../data/blogData';
 import GaicomLogo from '../components/GaicomLogo';
+import { client } from '../lib/sanityClient';
+import { BLOG_POST_BY_SLUG_QUERY } from '../lib/sanityQueries';
+import { portableTextComponents } from '../lib/portableTextSerializer';
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const post = getBlogBySlug(slug);
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isPortableText, setIsPortableText] = useState(false);
+
+  useEffect(() => {
+    async function fetchPost() {
+      try {
+        const data = await client.fetch(BLOG_POST_BY_SLUG_QUERY, { slug });
+        if (data) {
+          const hasPortableText = Array.isArray(data.body) && data.body.length > 0 && data.body[0]?._type;
+          setIsPortableText(hasPortableText);
+          setPost({
+            title: data.title,
+            slug: data.slug,
+            author: data.authorName || 'GAICOM',
+            date: new Date(data.publishedAt).toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            }),
+            dateISO: data.publishedAt,
+            updated: data.updatedAt
+              ? new Date(data.updatedAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              : null,
+            readTime: data.readTime || '',
+            image: data.mainImageUrl || '',
+            imageAlt: data.imageAlt || data.title,
+            excerpt: data.excerpt || '',
+            body: data.body,
+            content: null,
+          });
+          return;
+        }
+      } catch (err) {
+        console.error('Failed to fetch blog post from Sanity:', err);
+      }
+
+      // Fallback to local data
+      const fallback = getBlogBySlug(slug);
+      if (fallback) {
+        setPost(fallback);
+        setIsPortableText(false);
+      }
+      setLoading(false);
+    }
+
+    fetchPost().finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <p className="text-gray-400 text-lg">Loading...</p>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -74,11 +138,15 @@ export default function BlogPost() {
       <div className="w-16 h-1 bg-accent rounded-full mx-auto -mt-2 mb-12" aria-hidden="true" />
 
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-24">
-        <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
-          {post.content.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
-        </div>
+        {isPortableText && post.body ? (
+          <PortableText value={post.body} components={portableTextComponents} />
+        ) : (
+          <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+            {(post.content || []).map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        )}
       </article>
     </>
   );

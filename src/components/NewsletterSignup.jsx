@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FormInput from './FormInput';
 import Button from './Button';
+import { client } from '../lib/sanityClient';
+import { HOME_PAGE_QUERY } from '../lib/sanityQueries';
 
 const API_BASE = import.meta.env.VITE_DONATE_API_BASE || '';
+
+const FALLBACK_NEWSLETTER = {
+  newsletterHeading: 'Stay Connected',
+  newsletterSubheading: '',
+};
 
 export default function NewsletterSignup() {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +18,24 @@ export default function NewsletterSignup() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [serverError, setServerError] = useState('');
+  const [text, setText] = useState(FALLBACK_NEWSLETTER);
+
+  useEffect(() => {
+    async function fetchNewsletter() {
+      try {
+        const data = await client.fetch(HOME_PAGE_QUERY);
+        if (data && (data.newsletterHeading || data.newsletterSubheading)) {
+          setText({
+            newsletterHeading: data.newsletterHeading || FALLBACK_NEWSLETTER.newsletterHeading,
+            newsletterSubheading: data.newsletterSubheading || FALLBACK_NEWSLETTER.newsletterSubheading,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch newsletter data from Sanity:', err);
+      }
+    }
+    fetchNewsletter();
+  }, []);
 
   const validate = () => {
     const errs = {};
@@ -116,7 +141,7 @@ export default function NewsletterSignup() {
         />
         <div className="sm:pt-6">
           <Button type="submit" fullWidth disabled={status === 'loading'}>
-            {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
+            {status === 'loading' ? 'Subscribing\u2026' : 'Subscribe'}
           </Button>
         </div>
       </div>

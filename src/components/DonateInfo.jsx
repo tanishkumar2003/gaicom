@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from './Button';
+import { client } from '../lib/sanityClient';
+import { DONATION_TIERS_QUERY, DONATE_PAGE_QUERY } from '../lib/sanityQueries';
 
 const API_BASE = import.meta.env.VITE_DONATE_API_BASE || '';
 
-const tiers = [
+const FALLBACK_TIERS = [
   {
     amount: 25,
     label: 'Supporter',
@@ -27,6 +29,23 @@ const tiers = [
   },
 ];
 
+const FALLBACK_IMPACT = {
+  impactHeading: 'Your Impact Matters',
+  impactDescription:
+    'Every contribution helps us reach more communities with AI education and resources. In the past year, donations like yours have helped us:',
+  impactStats: [
+    'Train 500+ educators in AI tools',
+    'Host 30+ free community workshops',
+    'Provide resources to 50+ nonprofits',
+    'Reach 10,000+ community members',
+  ],
+  testimonialQuote:
+    "GAICOM's programs gave our nonprofit the AI skills we needed to double our outreach \u2014 without doubling our budget.",
+  testimonialAuthor: 'Community Impact Alliance',
+  customAmountMin: 1,
+  customAmountMax: 5000,
+};
+
 async function startCheckout(amount) {
   const res = await fetch(`${API_BASE}/create-checkout-session`, {
     method: 'POST',
@@ -47,6 +66,43 @@ export default function DonateInfo() {
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState('');
   const [customAmount, setCustomAmount] = useState('');
+  const [tiers, setTiers] = useState(FALLBACK_TIERS);
+  const [impact, setImpact] = useState(FALLBACK_IMPACT);
+
+  useEffect(() => {
+    async function fetchDonateData() {
+      try {
+        const [tiersData, pageData] = await Promise.all([
+          client.fetch(DONATION_TIERS_QUERY),
+          client.fetch(DONATE_PAGE_QUERY),
+        ]);
+        if (tiersData && tiersData.length > 0) {
+          setTiers(
+            tiersData.map((t) => ({
+              amount: t.amount,
+              label: t.label,
+              description: t.description,
+              featured: t.featured || false,
+            }))
+          );
+        }
+        if (pageData) {
+          setImpact({
+            impactHeading: pageData.impactHeading || FALLBACK_IMPACT.impactHeading,
+            impactDescription: pageData.impactDescription || FALLBACK_IMPACT.impactDescription,
+            impactStats: pageData.impactStats && pageData.impactStats.length > 0 ? pageData.impactStats : FALLBACK_IMPACT.impactStats,
+            testimonialQuote: pageData.testimonialQuote || FALLBACK_IMPACT.testimonialQuote,
+            testimonialAuthor: pageData.testimonialAuthor || FALLBACK_IMPACT.testimonialAuthor,
+            customAmountMin: pageData.customAmountMin || FALLBACK_IMPACT.customAmountMin,
+            customAmountMax: pageData.customAmountMax || FALLBACK_IMPACT.customAmountMax,
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch donation data from Sanity:', err);
+      }
+    }
+    fetchDonateData();
+  }, []);
 
   async function handleDonate(amount, key) {
     setError('');
@@ -92,7 +148,7 @@ export default function DonateInfo() {
               disabled={loading !== null}
               onClick={() => handleDonate(tier.amount, tier.label)}
             >
-              {loading === tier.label ? 'Redirecting…' : `Donate $${tier.amount}`}
+              {loading === tier.label ? 'Redirecting\u2026' : `Donate $${tier.amount}`}
             </Button>
           </div>
         ))}
@@ -102,15 +158,15 @@ export default function DonateInfo() {
       <div className="bg-surface rounded-2xl border border-white/5 p-6 md:p-8 mb-16 text-center">
         <h3 className="text-xl font-bold text-white mb-2">Custom Amount</h3>
         <p className="text-gray-400 text-sm mb-5">
-          Enter any amount between $1 and $5,000.
+          Enter any amount between ${impact.customAmountMin} and ${impact.customAmountMax.toLocaleString()}.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
           <div className="relative w-full sm:w-auto sm:flex-1">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-semibold">$</span>
             <input
               type="number"
-              min="1"
-              max="5000"
+              min={impact.customAmountMin}
+              max={impact.customAmountMax}
               step="1"
               placeholder="0"
               value={customAmount}
@@ -120,10 +176,10 @@ export default function DonateInfo() {
           </div>
           <Button
             variant="primary"
-            disabled={loading !== null || !customAmount || Number(customAmount) < 1 || Number(customAmount) > 5000}
+            disabled={loading !== null || !customAmount || Number(customAmount) < impact.customAmountMin || Number(customAmount) > impact.customAmountMax}
             onClick={() => handleDonate(Number(customAmount), 'custom')}
           >
-            {loading === 'custom' ? 'Redirecting…' : 'Donate'}
+            {loading === 'custom' ? 'Redirecting\u2026' : 'Donate'}
           </Button>
         </div>
       </div>
@@ -131,18 +187,12 @@ export default function DonateInfo() {
       <div className="bg-surface rounded-2xl border border-white/5 p-8 md:p-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-4">Your Impact Matters</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">{impact.impactHeading}</h3>
             <p className="text-gray-300 leading-relaxed mb-4">
-              Every contribution helps us reach more communities with AI education and resources.
-              In the past year, donations like yours have helped us:
+              {impact.impactDescription}
             </p>
             <ul className="space-y-2">
-              {[
-                'Train 500+ educators in AI tools',
-                'Host 30+ free community workshops',
-                'Provide resources to 50+ nonprofits',
-                'Reach 10,000+ community members',
-              ].map((item) => (
+              {impact.impactStats.map((item) => (
                 <li key={item} className="flex items-center gap-2 text-gray-300 text-sm">
                   <svg className="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -154,10 +204,9 @@ export default function DonateInfo() {
           </div>
           <div className="bg-surface-light rounded-xl p-6 border border-white/5">
             <blockquote className="italic text-gray-300 leading-relaxed mb-4">
-              &ldquo;GAICOM&apos;s programs gave our nonprofit the AI skills we needed to double
-              our outreach — without doubling our budget.&rdquo;
+              &ldquo;{impact.testimonialQuote}&rdquo;
             </blockquote>
-            <p className="text-white font-semibold text-sm">— Community Impact Alliance</p>
+            <p className="text-white font-semibold text-sm">&mdash; {impact.testimonialAuthor}</p>
           </div>
         </div>
       </div>

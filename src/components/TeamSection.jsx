@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { client } from '../lib/sanityClient';
+import { TEAM_MEMBERS_QUERY } from '../lib/sanityQueries';
 
-const teamMembers = [
+const FALLBACK_TEAM = [
   {
     name: 'Srinivas Salandra',
     initials: 'SS',
@@ -74,6 +76,29 @@ function TeamAvatar({ member }) {
 }
 
 export default function TeamSection() {
+  const [teamMembers, setTeamMembers] = useState(FALLBACK_TEAM);
+
+  useEffect(() => {
+    async function fetchTeam() {
+      try {
+        const data = await client.fetch(TEAM_MEMBERS_QUERY);
+        if (data && data.length > 0) {
+          setTeamMembers(
+            data.map((m) => ({
+              name: m.name,
+              initials: m.initials || m.name.split(' ').map((n) => n[0]).join(''),
+              image: m.imageUrl || '',
+              bio: m.bio,
+            }))
+          );
+        }
+      } catch (err) {
+        console.error('Failed to fetch team members from Sanity:', err);
+      }
+    }
+    fetchTeam();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {teamMembers.map((member, i) => (

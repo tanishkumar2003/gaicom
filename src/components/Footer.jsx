@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import GaicomLogo from './GaicomLogo';
+import { client } from '../lib/sanityClient';
+import { SITE_SETTINGS_QUERY } from '../lib/sanityQueries';
 
 const quickLinks = [
   { label: 'Home', to: '/' },
@@ -10,14 +13,48 @@ const quickLinks = [
   { label: 'Donate', to: '/donate' },
 ];
 
-const socialLinks = [
+const FALLBACK_SOCIAL = [
   { label: 'Twitter', icon: 'X' },
   { label: 'LinkedIn', icon: 'in' },
   { label: 'YouTube', icon: '\u25B6' },
   { label: 'GitHub', icon: '\u2328' },
 ];
 
+const FALLBACK_CONTACT = {
+  contactEmail: 'gaicomnj@gmail.com',
+  location: 'Livingston, NJ',
+};
+
 export default function Footer() {
+  const [contact, setContact] = useState(FALLBACK_CONTACT);
+  const [socialLinks, setSocialLinks] = useState(FALLBACK_SOCIAL);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const data = await client.fetch(SITE_SETTINGS_QUERY);
+        if (data) {
+          setContact({
+            contactEmail: data.contactEmail || FALLBACK_CONTACT.contactEmail,
+            location: data.location || FALLBACK_CONTACT.location,
+          });
+          if (data.socialLinks && data.socialLinks.length > 0) {
+            setSocialLinks(
+              data.socialLinks.map((s) => ({
+                label: s.platform || '',
+                icon: s.icon || s.platform?.[0] || '',
+                url: s.url || '#',
+              }))
+            );
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch site settings from Sanity:', err);
+      }
+    }
+    fetchSettings();
+  }, []);
+
   return (
     <footer className="bg-navy-dark border-t border-white/5" aria-label="Site footer">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
@@ -36,7 +73,7 @@ export default function Footer() {
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
-                  href="#"
+                  href={social.url || '#'}
                   className="w-9 h-9 rounded-lg bg-surface-light flex items-center justify-center text-gray-400 hover:text-accent hover:bg-accent/10 transition-colors duration-200 text-sm font-bold"
                   aria-label={social.label}
                 >
@@ -73,8 +110,8 @@ export default function Footer() {
                 <svg className="w-4 h-4 mt-0.5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:gaicomnj@gmail.com" className="hover:text-accent transition-colors duration-200">
-                  gaicomnj@gmail.com
+                <a href={`mailto:${contact.contactEmail}`} className="hover:text-accent transition-colors duration-200">
+                  {contact.contactEmail}
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -82,7 +119,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>Livingston, NJ</span>
+                <span>{contact.location}</span>
               </li>
             </ul>
           </div>

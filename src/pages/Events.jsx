@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SectionWrapper from '../components/SectionWrapper';
 import EventCard from '../components/EventCard';
 import GaicomLogo from '../components/GaicomLogo';
+import { client } from '../lib/sanityClient';
+import { UPCOMING_EVENTS_QUERY, PAST_EVENTS_QUERY } from '../lib/sanityQueries';
 
-const pastEvents = [
+const FALLBACK_PAST_EVENTS = [
   {
     date: 'March 24',
     title: 'The Transformation Begins: Generative AI Foundations',
@@ -42,8 +44,6 @@ const pastEvents = [
   },
 ];
 
-const upcomingEvents = [];
-
 const tabs = [
   { key: 'upcoming', label: 'Upcoming Events' },
   { key: 'past', label: 'Past Events' },
@@ -51,6 +51,48 @@ const tabs = [
 
 export default function Events() {
   const [activeTab, setActiveTab] = useState('past');
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState(FALLBACK_PAST_EVENTS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        const [upcoming, past] = await Promise.all([
+          client.fetch(UPCOMING_EVENTS_QUERY),
+          client.fetch(PAST_EVENTS_QUERY),
+        ]);
+        if (upcoming) {
+          setUpcomingEvents(
+            upcoming.map((e) => ({
+              date: e.dateDisplay || '',
+              title: e.title,
+              description: e.description,
+              image: e.imageUrl || '',
+              registrationLink: e.registrationLink || '',
+            }))
+          );
+          if (upcoming.length > 0) setActiveTab('upcoming');
+        }
+        if (past && past.length > 0) {
+          setPastEvents(
+            past.map((e) => ({
+              date: e.dateDisplay || '',
+              title: e.title,
+              description: e.description,
+              image: e.imageUrl || '',
+              recapLink: e.recapLink || '',
+            }))
+          );
+        }
+      } catch (err) {
+        console.error('Failed to fetch events from Sanity:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchEvents();
+  }, []);
 
   const events = activeTab === 'upcoming' ? upcomingEvents : pastEvents;
 
@@ -120,7 +162,11 @@ export default function Events() {
         </div>
 
         <div role="tabpanel" aria-label={`${activeTab} events`}>
-          {events.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-16">
+              <p className="text-gray-400 text-lg">Loading events...</p>
+            </div>
+          ) : events.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {events.map((event, i) => (
                 <EventCard key={i} event={event} />
