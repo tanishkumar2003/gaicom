@@ -15,22 +15,23 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(5).max(200),
       group: 'content',
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
-      validation: (Rule) => Rule.required(),
+      options: {source: 'title', maxLength: 96},
+      validation: (Rule) => Rule.required().error('Slug is required. Click "Generate" to create one from the title'),
       group: 'content',
     }),
     defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
-      validation: (Rule) => Rule.required().max(300),
+      description: 'Short summary shown in blog listings (10-300 characters)',
+      validation: (Rule) => Rule.required().min(10).max(300),
       group: 'content',
     }),
     defineField({
@@ -38,6 +39,8 @@ export default defineType({
       title: 'Body',
       type: 'array',
       group: 'content',
+      validation: (Rule) =>
+        Rule.required().min(1).error('Blog post body cannot be empty'),
       of: [
         {
           type: 'block',
@@ -65,7 +68,9 @@ export default defineType({
                     title: 'URL',
                     type: 'url',
                     validation: (Rule) =>
-                      Rule.uri({allowRelative: true, scheme: ['http', 'https', 'mailto']}),
+                      Rule.required()
+                        .uri({allowRelative: true, scheme: ['http', 'https', 'mailto']})
+                        .error('A valid URL is required for links'),
                   }),
                   defineField({
                     name: 'blank',
@@ -86,6 +91,8 @@ export default defineType({
               name: 'alt',
               title: 'Alt Text',
               type: 'string',
+              validation: (Rule) =>
+                Rule.required().error('Alt text is required for all inline images'),
             }),
             defineField({
               name: 'caption',
@@ -101,13 +108,17 @@ export default defineType({
       title: 'Main Image',
       type: 'image',
       options: {hotspot: true},
-      validation: (Rule) => Rule.required(),
+      description: 'Featured image for the blog post. Shown at top of post and in listings',
+      validation: (Rule) => Rule.required().error('A main image is required'),
       group: 'media',
     }),
     defineField({
       name: 'imageAlt',
       title: 'Image Alt Text',
       type: 'string',
+      description: 'Accessible description of the main image',
+      validation: (Rule) =>
+        Rule.required().min(5).max(200).error('Alt text is required for the main image (5-200 characters)'),
       group: 'media',
     }),
     defineField({
@@ -115,6 +126,7 @@ export default defineType({
       title: 'Author',
       type: 'reference',
       to: [{type: 'author'}],
+      validation: (Rule) => Rule.required().error('An author is required'),
       group: 'metadata',
     }),
     defineField({
@@ -128,20 +140,51 @@ export default defineType({
       name: 'updatedAt',
       title: 'Updated At',
       type: 'datetime',
+      description: 'Set this when making significant content updates',
       group: 'metadata',
+      validation: (Rule) =>
+        Rule.custom((updatedAt, context) => {
+          if (!updatedAt) return true
+          const publishedAt = context.document?.publishedAt
+          if (publishedAt && new Date(updatedAt) < new Date(publishedAt)) {
+            return 'Updated date cannot be before the published date'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'readTime',
       title: 'Read Time',
       type: 'string',
       description: 'e.g. "5 min read"',
+      validation: (Rule) =>
+        Rule.required()
+          .regex(/^\d+\s*min\s*read$/i, {name: 'read time format'})
+          .error('Read time is required (format: "5 min read")'),
       group: 'metadata',
     }),
     defineField({
       name: 'categories',
       title: 'Categories',
       type: 'array',
-      of: [{type: 'string'}],
+      description: 'Select one or more categories',
+      of: [
+        {
+          type: 'string',
+          options: {
+            list: [
+              {title: 'AI Education', value: 'AI Education'},
+              {title: 'Community Impact', value: 'Community Impact'},
+              {title: 'Technology', value: 'Technology'},
+              {title: 'Events', value: 'Events'},
+              {title: 'Opinion', value: 'Opinion'},
+              {title: 'Research', value: 'Research'},
+              {title: 'Tutorial', value: 'Tutorial'},
+              {title: 'News', value: 'News'},
+            ],
+          },
+        },
+      ],
       options: {layout: 'tags'},
       group: 'metadata',
     }),
@@ -157,13 +200,16 @@ export default defineType({
       name: 'seoTitle',
       title: 'SEO Title',
       type: 'string',
+      description: 'Override for the page title tag (max 70 characters)',
+      validation: (Rule) => Rule.max(70).warning('SEO titles should be under 70 characters'),
       group: 'seo',
     }),
     defineField({
       name: 'seoDescription',
       title: 'SEO Description',
       type: 'text',
-      validation: (Rule) => Rule.max(160),
+      description: 'Meta description for search engines (max 160 characters)',
+      validation: (Rule) => Rule.max(160).warning('SEO descriptions should be under 160 characters'),
       group: 'seo',
     }),
   ],
@@ -179,12 +225,13 @@ export default defineType({
       title: 'title',
       publishedAt: 'publishedAt',
       media: 'mainImage',
+      authorName: 'author.name',
     },
-    prepare({title, publishedAt, media}) {
+    prepare({title, publishedAt, media, authorName}) {
       const date = publishedAt ? new Date(publishedAt).toLocaleDateString() : 'No date'
       return {
         title,
-        subtitle: date,
+        subtitle: `${date}${authorName ? ` | ${authorName}` : ''}`,
         media,
       }
     },

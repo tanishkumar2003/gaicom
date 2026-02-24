@@ -1,0 +1,3616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAICOM System Documentation</title>
+    <style>
+/* ============================================================
+   PRINT + SCREEN STYLES - Enhanced Version 2.0
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --navy: #0F172A;
+    --navy-light: #1E293B;
+    --slate-700: #334155;
+    --slate-500: #64748B;
+    --slate-400: #94A3B8;
+    --slate-200: #E2E8F0;
+    --slate-100: #F1F5F9;
+    --slate-50: #F8FAFC;
+    --accent: #3B82F6;
+    --accent-dark: #2563EB;
+    --accent-light: #DBEAFE;
+    --success: #10B981;
+    --success-light: #D1FAE5;
+    --warning: #F59E0B;
+    --warning-light: #FEF3C7;
+    --danger: #EF4444;
+    --danger-light: #FEE2E2;
+    --white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    font-size: 10pt;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.65;
+    color: var(--navy);
+    background: var(--white);
+}
+
+/* ============================================================
+   PAGE RULES - Enhanced for proper page breaks
+   ============================================================ */
+@page {
+    size: letter;
+    margin: 0.9in 0.85in 1in 0.85in;
+    
+    @bottom-center {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 9pt;
+        color: var(--slate-500);
+    }
+}
+
+@page :first {
+    margin: 0;
+    @bottom-center { content: none; }
+}
+
+/* Second page is TOC - no page number */
+@page :nth(2) {
+    @bottom-center { content: none; }
+}
+
+/* ============================================================
+   COVER PAGE
+   ============================================================ */
+.cover-page {
+    page-break-after: always;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, var(--navy) 0%, #1a2744 50%, #0d1f3c 100%);
+    color: white;
+    text-align: center;
+    padding: 2in;
+    position: relative;
+    overflow: hidden;
+}
+
+.cover-page::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 80%;
+    height: 180%;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.cover-page::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -20%;
+    width: 70%;
+    height: 140%;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.cover-accent-line {
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 0 auto 40px;
+}
+
+.cover-org {
+    font-size: 14pt;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+}
+
+.cover-title {
+    font-size: 38pt;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.cover-subtitle {
+    font-size: 17pt;
+    font-weight: 300;
+    color: var(--slate-400);
+    margin-bottom: 48px;
+}
+
+.cover-tagline {
+    font-size: 11pt;
+    font-weight: 400;
+    color: var(--slate-400);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 60px;
+}
+
+.cover-meta {
+    font-size: 9.5pt;
+    color: var(--slate-500);
+    line-height: 2;
+}
+
+.cover-meta strong {
+    color: var(--slate-400);
+    font-weight: 500;
+}
+
+/* ============================================================
+   TABLE OF CONTENTS
+   ============================================================ */
+.toc-page {
+    page-break-after: always;
+    padding: 0.5in 0;
+}
+
+.toc-page h2 {
+    font-size: 22pt;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+}
+
+.toc-page .toc-underline {
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 32px;
+}
+
+.toc-columns {
+    column-count: 2;
+    column-gap: 40px;
+}
+
+.toc-section {
+    margin-bottom: 3px;
+    break-inside: avoid;
+}
+
+.toc-section a {
+    display: block;
+    text-decoration: none;
+    color: var(--navy);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--slate-100);
+    transition: color 0.15s;
+}
+
+.toc-section a:hover {
+    color: var(--accent);
+}
+
+.toc-section.level-1 a {
+    font-size: 11pt;
+    font-weight: 700;
+    color: var(--navy);
+    padding-top: 14px;
+    border-bottom-color: var(--slate-200);
+}
+
+.toc-section.level-2 a {
+    font-size: 9.5pt;
+    font-weight: 500;
+    color: var(--slate-700);
+    padding-left: 16px;
+}
+
+.toc-section.level-3 a {
+    font-size: 9pt;
+    font-weight: 400;
+    color: var(--slate-500);
+    padding-left: 32px;
+    border-bottom-color: transparent;
+}
+
+/* ============================================================
+   MAJOR SECTION HEADER (for starting each chapter on new page)
+   ============================================================ */
+.section-start {
+    page-break-before: always;
+    padding-top: 0.5in;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.doc-content h1 {
+    display: none; /* Hide the redundant H1 since we have cover page */
+}
+
+.doc-content h2 {
+    font-size: 22pt;
+    font-weight: 800;
+    color: var(--navy);
+    margin-top: 0;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+    page-break-after: avoid;
+}
+
+.doc-content h2 .section-number {
+    color: var(--accent);
+    margin-right: 8px;
+}
+
+.section-rule {
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin-bottom: 28px;
+    border: none;
+}
+
+.doc-content h3 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 32px;
+    margin-bottom: 12px;
+    page-break-after: avoid;
+    border-bottom: 2px solid var(--slate-100);
+    padding-bottom: 8px;
+}
+
+.doc-content h4 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: var(--slate-700);
+    margin-top: 24px;
+    margin-bottom: 10px;
+    page-break-after: avoid;
+}
+
+/* ============================================================
+   PARAGRAPHS & TEXT
+   ============================================================ */
+.doc-content p {
+    margin-bottom: 12px;
+    font-size: 10pt;
+    line-height: 1.7;
+    color: var(--slate-700);
+    orphans: 3;
+    widows: 3;
+}
+
+.doc-content strong {
+    font-weight: 600;
+    color: var(--navy);
+}
+
+.doc-content em {
+    font-style: italic;
+}
+
+.doc-content a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* ============================================================
+   LISTS
+   ============================================================ */
+.doc-content ul, .doc-content ol {
+    margin-bottom: 14px;
+    padding-left: 24px;
+}
+
+.doc-content li {
+    font-size: 10pt;
+    line-height: 1.7;
+    color: var(--slate-700);
+    margin-bottom: 5px;
+}
+
+.doc-content li > ul, .doc-content li > ol {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Checkboxes - Enhanced styling */
+.checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    padding-left: 0;
+}
+
+.checkbox-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    border: 2px solid var(--accent);
+    border-radius: 3px;
+    margin-right: 10px;
+    margin-top: 3px;
+    background: var(--white);
+}
+
+.checkbox-box.checked {
+    background: var(--accent);
+    position: relative;
+}
+
+.checkbox-box.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+    position: absolute;
+    top: -2px;
+    left: 1px;
+}
+
+/* ============================================================
+   TABLES - Enhanced
+   ============================================================ */
+.doc-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 20px 0;
+    font-size: 9pt;
+    page-break-inside: auto;
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.doc-content thead th {
+    background: var(--navy);
+    color: var(--white);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 8.5pt;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: none;
+}
+
+.doc-content thead th:first-child {
+    border-radius: 0;
+}
+
+.doc-content thead th:last-child {
+    border-radius: 0;
+}
+
+.doc-content tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--slate-200);
+    vertical-align: top;
+    line-height: 1.55;
+}
+
+.doc-content tbody tr:nth-child(even) {
+    background: var(--slate-50);
+}
+
+.doc-content tbody tr:nth-child(odd) {
+    background: var(--white);
+}
+
+.doc-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ============================================================
+   CODE BLOCKS - Enhanced with language labels
+   ============================================================ */
+.doc-content pre {
+    background: var(--navy);
+    color: #E2E8F0;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 14px 0 18px 0;
+    overflow-x: auto;
+    font-size: 8.5pt;
+    line-height: 1.65;
+    page-break-inside: avoid;
+    border-left: 4px solid var(--accent);
+    position: relative;
+}
+
+.doc-content pre code {
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 8.5pt;
+    background: none;
+    padding: 0;
+    border: none;
+    color: inherit;
+}
+
+.doc-content code {
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 9pt;
+    background: var(--slate-100);
+    color: var(--accent-dark);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--slate-200);
+}
+
+/* Code language label */
+.code-lang {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--accent);
+    color: white;
+    font-size: 7pt;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 0 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   BLOCKQUOTES / CALLOUTS
+   ============================================================ */
+.doc-content blockquote {
+    border-left: 4px solid var(--accent);
+    background: var(--accent-light);
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 10pt;
+    color: var(--slate-700);
+}
+
+/* ============================================================
+   CALLOUT BOXES
+   ============================================================ */
+.callout {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 9.5pt;
+    line-height: 1.65;
+    page-break-inside: avoid;
+}
+
+.callout-label {
+    font-weight: 700;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+.callout-label::before {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 14pt;
+}
+
+.callout-important {
+    background: var(--warning-light);
+    border-left: 4px solid var(--warning);
+}
+
+.callout-important .callout-label { color: #92400E; }
+.callout-important .callout-label::before { content: '⚠'; }
+
+.callout-note {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+
+.callout-note .callout-label { color: var(--accent-dark); }
+.callout-note .callout-label::before { content: 'ℹ'; }
+
+.callout-warning {
+    background: var(--danger-light);
+    border-left: 4px solid var(--danger);
+}
+
+.callout-warning .callout-label { color: #991B1B; }
+.callout-warning .callout-label::before { content: '⛔'; }
+
+.callout-tip {
+    background: var(--success-light);
+    border-left: 4px solid var(--success);
+}
+
+.callout-tip .callout-label { color: #065F46; }
+.callout-tip .callout-label::before { content: '💡'; }
+
+/* ============================================================
+   HORIZONTAL RULES (section dividers) - Fixed page breaks
+   ============================================================ */
+.doc-content hr {
+    border: none;
+    height: 0;
+    margin: 0;
+    visibility: hidden;
+}
+
+/* Section break - forces new page before the next major section */
+.section-break {
+    page-break-before: always;
+    margin-top: 0.5in;
+}
+
+/* ============================================================
+   MERMAID / DIAGRAM BOXES
+   ============================================================ */
+.diagram-container {
+    page-break-inside: avoid;
+    margin: 20px 0;
+}
+
+.flow-diagram {
+    background: linear-gradient(135deg, var(--slate-50) 0%, var(--white) 100%);
+    border: 2px solid var(--slate-200);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    page-break-inside: avoid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.flow-diagram h4 {
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--slate-200);
+}
+
+.flow-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.flow-box {
+    background: var(--white);
+    border: 2px solid var(--slate-300);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 9pt;
+    font-weight: 600;
+    color: var(--navy);
+    text-align: center;
+    min-width: 110px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.flow-box small {
+    display: block;
+    font-size: 7.5pt;
+    font-weight: 400;
+    color: var(--slate-500);
+    margin-top: 2px;
+}
+
+.flow-box.primary { 
+    border-color: var(--accent); 
+    background: linear-gradient(135deg, var(--accent-light) 0%, #EFF6FF 100%);
+}
+.flow-box.cloud { 
+    border-color: #818CF8; 
+    background: linear-gradient(135deg, #EEF2FF 0%, #F5F5FF 100%);
+}
+.flow-box.lambda { 
+    border-color: #F97316; 
+    background: linear-gradient(135deg, #FFF7ED 0%, #FFFAF5 100%);
+}
+.flow-box.ext { 
+    border-color: var(--success); 
+    background: linear-gradient(135deg, #ECFDF5 0%, #F5FFFA 100%);
+}
+
+.flow-arrow {
+    font-size: 16pt;
+    color: var(--slate-400);
+    font-weight: 400;
+}
+
+.flow-arrow-down {
+    display: block;
+    text-align: center;
+    font-size: 16pt;
+    color: var(--slate-400);
+    font-weight: 400;
+    margin: 6px 0;
+}
+
+.diagram-legend {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 8pt;
+    color: var(--slate-500);
+    padding-top: 12px;
+    border-top: 1px solid var(--slate-200);
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 12px;
+}
+
+.legend-box {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-right: 5px;
+    border: 1.5px solid;
+}
+
+/* ============================================================
+   STEP-BY-STEP GUIDES - Enhanced
+   ============================================================ */
+.step-guide {
+    background: var(--slate-50);
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 14px 0;
+}
+
+.step-guide ol {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+}
+
+.step-guide li {
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 36px;
+    margin-bottom: 12px;
+}
+
+.step-guide li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    font-size: 11pt;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================================
+   PAGE BREAKS - Explicit control
+   ============================================================ */
+.page-break { 
+    page-break-before: always; 
+    margin: 0;
+    padding: 0;
+    height: 0;
+}
+.no-break { page-break-inside: avoid; }
+
+/* Keep headings with following content */
+h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+}
+
+/* ============================================================
+   PRINT SPECIFICS
+   ============================================================ */
+@media print {
+    body { 
+        -webkit-print-color-adjust: exact !important; 
+        print-color-adjust: exact !important; 
+    }
+    .cover-page { 
+        height: 100vh; 
+        min-height: 100vh;
+    }
+    a { 
+        color: var(--accent-dark) !important; 
+    }
+    .page-break {
+        page-break-before: always;
+    }
+}
+</style>
+</head>
+<body>
+    
+<div class="cover-page">
+    <div class="cover-accent-line"></div>
+    <div class="cover-org">GAICOM</div>
+    <div class="cover-title">System &amp; CMS<br>Documentation</div>
+    <div class="cover-subtitle">Technical Reference &amp; Operations Guide</div>
+    <div class="cover-tagline">
+        Comprehensive documentation for the GAICOM web platform —
+        architecture, frontend, backend, CMS operations, deployment,
+        and maintenance procedures.
+    </div>
+    <div class="cover-meta">
+        <strong>Created by:</strong> Tanish Kumar<br>
+        <strong>Organization:</strong> Generative AI Community (GAICOM)<br>
+        <strong>Version:</strong> 1.0<br>
+        <strong>Date:</strong> February 2026
+    </div>
+</div>
+
+    <div class="toc-page">
+  <h2>Table of Contents</h2>
+  <div class="toc-underline"></div>
+  <div class="toc-columns">
+    <div class="toc-section level-1"><a href="#1-executive-summary">1. Executive Summary</a></div>
+    <div class="toc-section level-2"><a href="#what-gaicom-is">What GAICOM Is</a></div>
+    <div class="toc-section level-2"><a href="#what-problem-it-solves">What Problem It Solves</a></div>
+    <div class="toc-section level-2"><a href="#high-level-tech-stack">High-Level Tech Stack</a></div>
+    <div class="toc-section level-2"><a href="#why-static-hosting-headless-cms">Why Static Hosting + Headless CMS</a></div>
+    <div class="toc-section level-1"><a href="#2-system-architecture">2. System Architecture</a></div>
+    <div class="toc-section level-2"><a href="#a-architecture-overview">A. Architecture Overview</a></div>
+    <div class="toc-section level-2"><a href="#b-architecture-diagram">B. Architecture Diagram</a></div>
+    <div class="toc-section level-2"><a href="#c-content-flow">C. Content Flow</a></div>
+    <div class="toc-section level-2"><a href="#d-payment-flow">D. Payment Flow</a></div>
+    <div class="toc-section level-2"><a href="#e-newsletter-flow">E. Newsletter Flow</a></div>
+    <div class="toc-section level-2"><a href="#f-local-vs-production-behavior">F. Local vs Production Behavior</a></div>
+    <div class="toc-section level-1"><a href="#3-frontend-technical-documentation">3. Frontend Technical Documentation</a></div>
+    <div class="toc-section level-2"><a href="#folder-structure">Folder Structure</a></div>
+    <div class="toc-section level-2"><a href="#component-architecture">Component Architecture</a></div>
+    <div class="toc-section level-2"><a href="#blog-routing-system">Blog Routing System</a></div>
+    <div class="toc-section level-2"><a href="#cms-queries-groq">CMS Queries (GROQ)</a></div>
+    <div class="toc-section level-2"><a href="#state-management">State Management</a></div>
+    <div class="toc-section level-2"><a href="#api-calls-to-lambda">API Calls to Lambda</a></div>
+    <div class="toc-section level-2"><a href="#environment-variable-usage">Environment Variable Usage</a></div>
+    <div class="toc-section level-2"><a href="#build-process">Build Process</a></div>
+    <div class="toc-section level-2"><a href="#s3-deployment">S3 Deployment</a></div>
+    <div class="toc-section level-1"><a href="#4-backend-lambda-documentation">4. Backend / Lambda Documentation</a></div>
+    <div class="toc-section level-2"><a href="#overview">Overview</a></div>
+    <div class="toc-section level-2"><a href="#route-post-create-checkout-session">Route: POST /create-checkout-session</a></div>
+    <div class="toc-section level-2"><a href="#route-post-webhook">Route: POST /webhook</a></div>
+    <div class="toc-section level-2"><a href="#route-post-newsletter">Route: POST /newsletter</a></div>
+    <div class="toc-section level-2"><a href="#cors-strategy">CORS Strategy</a></div>
+    <div class="toc-section level-2"><a href="#error-handling-strategy">Error Handling Strategy</a></div>
+    <div class="toc-section level-1"><a href="#5-cms-user-guide-non-tech-friendly">5. CMS User Guide (Non-Tech Friendly)</a></div>
+    <div class="toc-section level-2"><a href="#5-1-five-minute-quick-start">5.1 Five-Minute Quick Start</a></div>
+    <div class="toc-section level-2"><a href="#5-2-logging-in">5.2 Logging In</a></div>
+    <div class="toc-section level-2"><a href="#5-3-navigation-basics">5.3 Navigation Basics</a></div>
+    <div class="toc-section level-2"><a href="#5-4-how-publishing-works">5.4 How Publishing Works</a></div>
+    <div class="toc-section level-2"><a href="#5-5-golden-rules-and-guardrails">5.5 Golden Rules and Guardrails</a></div>
+    <div class="toc-section level-2"><a href="#5-6-step-by-step-managing-hero-slides">5.6 Step-by-Step: Managing Hero Slides</a></div>
+    <div class="toc-section level-2"><a href="#5-7-step-by-step-managing-testimonials">5.7 Step-by-Step: Managing Testimonials</a></div>
+    <div class="toc-section level-2"><a href="#5-8-step-by-step-managing-team-members">5.8 Step-by-Step: Managing Team Members</a></div>
+    <div class="toc-section level-2"><a href="#5-9-step-by-step-managing-events">5.9 Step-by-Step: Managing Events</a></div>
+    <div class="toc-section level-2"><a href="#5-10-step-by-step-managing-resources">5.10 Step-by-Step: Managing Resources</a></div>
+    <div class="toc-section level-2"><a href="#5-11-step-by-step-managing-blog-posts">5.11 Step-by-Step: Managing Blog Posts</a></div>
+    <div class="toc-section level-2"><a href="#5-12-step-by-step-managing-authors">5.12 Step-by-Step: Managing Authors</a></div>
+    <div class="toc-section level-2"><a href="#5-13-step-by-step-managing-donation-tiers">5.13 Step-by-Step: Managing Donation Tiers</a></div>
+    <div class="toc-section level-2"><a href="#5-14-step-by-step-editing-singleton-pages">5.14 Step-by-Step: Editing Singleton Pages</a></div>
+    <div class="toc-section level-2"><a href="#5-15-how-to-add-images">5.15 How to Add Images</a></div>
+    <div class="toc-section level-2"><a href="#5-16-how-to-generate-slugs">5.16 How to Generate Slugs</a></div>
+    <div class="toc-section level-2"><a href="#5-17-common-mistakes-and-how-to-fix-them">5.17 Common Mistakes and How to Fix Them</a></div>
+    <div class="toc-section level-2"><a href="#5-18-troubleshooting">5.18 Troubleshooting</a></div>
+    <div class="toc-section level-2"><a href="#5-19-do-not-delete">5.19 Do NOT Delete</a></div>
+    <div class="toc-section level-2"><a href="#5-20-content-quality-tips">5.20 Content Quality Tips</a></div>
+    <div class="toc-section level-2"><a href="#5-21-when-to-ask-a-developer">5.21 When to Ask a Developer</a></div>
+    <div class="toc-section level-2"><a href="#5-22-cms-guardrails-reference">5.22 CMS Guardrails Reference</a></div>
+    <div class="toc-section level-1"><a href="#6-cms-technical-schema-documentation">6. CMS Technical Schema Documentation</a></div>
+    <div class="toc-section level-2"><a href="#schema-overview">Schema Overview</a></div>
+    <div class="toc-section level-2"><a href="#schema-sitesettings">Schema: siteSettings</a></div>
+    <div class="toc-section level-2"><a href="#schema-homepage">Schema: homePage</a></div>
+    <div class="toc-section level-2"><a href="#schema-aboutpage">Schema: aboutPage</a></div>
+    <div class="toc-section level-2"><a href="#schema-donatepage">Schema: donatePage</a></div>
+    <div class="toc-section level-2"><a href="#schema-heroslide">Schema: heroSlide</a></div>
+    <div class="toc-section level-2"><a href="#schema-testimonial">Schema: testimonial</a></div>
+    <div class="toc-section level-2"><a href="#schema-teammember">Schema: teamMember</a></div>
+    <div class="toc-section level-2"><a href="#schema-event">Schema: event</a></div>
+    <div class="toc-section level-2"><a href="#schema-resource">Schema: resource</a></div>
+    <div class="toc-section level-2"><a href="#schema-blogpost">Schema: blogPost</a></div>
+    <div class="toc-section level-2"><a href="#schema-author">Schema: author</a></div>
+    <div class="toc-section level-2"><a href="#schema-donationtier">Schema: donationTier</a></div>
+    <div class="toc-section level-2"><a href="#relationships-between-schemas">Relationships Between Schemas</a></div>
+    <div class="toc-section level-1"><a href="#7-deployment-guide">7. Deployment Guide</a></div>
+    <div class="toc-section level-2"><a href="#local-development">Local Development</a></div>
+    <div class="toc-section level-2"><a href="#production-deployment">Production Deployment</a></div>
+    <div class="toc-section level-2"><a href="#known-deployment-issues">Known Deployment Issues</a></div>
+    <div class="toc-section level-1"><a href="#8-environment-variables-security">8. Environment Variables & Security</a></div>
+    <div class="toc-section level-2"><a href="#all-required-environment-variables">All Required Environment Variables</a></div>
+    <div class="toc-section level-2"><a href="#security-considerations">Security Considerations</a></div>
+    <div class="toc-section level-1"><a href="#9-known-issues-lessons-learned">9. Known Issues & Lessons Learned</a></div>
+    <div class="toc-section level-2"><a href="#local-vs-s3-success-url-mismatch">Local vs S3 Success URL Mismatch</a></div>
+    <div class="toc-section level-2"><a href="#stripe-redirect-debugging">Stripe Redirect Debugging</a></div>
+    <div class="toc-section level-2"><a href="#lambda-timeout-considerations">Lambda Timeout Considerations</a></div>
+    <div class="toc-section level-2"><a href="#cors-configuration-decisions">CORS Configuration Decisions</a></div>
+    <div class="toc-section level-2"><a href="#static-hosting-tradeoffs">Static Hosting Tradeoffs</a></div>
+    <div class="toc-section level-2"><a href="#removing-fake-blog-stats">Removing Fake Blog Stats</a></div>
+    <div class="toc-section level-2"><a href="#cms-publishing-delays">CMS Publishing Delays</a></div>
+    <div class="toc-section level-2"><a href="#build-cache-issues">Build Cache Issues</a></div>
+    <div class="toc-section level-1"><a href="#10-maintenance-future-improvements">10. Maintenance & Future Improvements</a></div>
+    <div class="toc-section level-2"><a href="#how-to-add-new-cms-sections">How to Add New CMS Sections</a></div>
+    <div class="toc-section level-2"><a href="#how-to-add-new-lambda-endpoints">How to Add New Lambda Endpoints</a></div>
+    <div class="toc-section level-2"><a href="#how-to-scale-the-backend">How to Scale the Backend</a></div>
+    <div class="toc-section level-2"><a href="#how-to-add-authentication">How to Add Authentication</a></div>
+    <div class="toc-section level-2"><a href="#how-to-migrate-to-full-backend-hosting">How to Migrate to Full Backend Hosting</a></div>
+  </div>
+</div>
+
+    <div class="doc-content">
+        
+<div class="section-break"></div><h2 id="1-executive-summary"><span class="section-number">1.</span> Executive Summary</h2>
+<hr class="section-rule">
+<h3 id="what-gaicom-is">What GAICOM Is</h3>
+<p>GAICOM (Generative AI Community) is a nonprofit organization based in Livingston, NJ that bridges the gap between cutting-edge generative AI and the communities that stand to benefit the most. The GAICOM web platform serves as the organization's digital presence — providing information about the mission, hosting a blog, listing events, offering educational resources, accepting donations, and collecting newsletter subscriptions.</p>
+<h3 id="what-problem-it-solves">What Problem It Solves</h3>
+<p>GAICOM addresses the growing AI learning gap. As generative AI reshapes industries, many communities — educators, small businesses, students, and nonprofits — lack accessible, understandable entry points into AI. The platform solves this by:</p>
+<ul>
+<li>Providing a central hub for AI education events and workshops</li>
+<li>Publishing blog content that demystifies AI concepts</li>
+<li>Curating resources for different experience levels</li>
+<li>Accepting donations to fund community AI programs</li>
+<li>Building a newsletter subscriber base for ongoing engagement</li>
+</ul>
+<h3 id="high-level-tech-stack">High-Level Tech Stack</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend</td>
+<td>React 19, React Router 7, Tailwind CSS 4</td>
+</tr>
+<tr>
+<td>Build Tool</td>
+<td>Vite 7</td>
+</tr>
+<tr>
+<td>Content Management</td>
+<td>Sanity CMS (headless)</td>
+</tr>
+<tr>
+<td>Static Hosting</td>
+<td>AWS S3 (website-enabled bucket)</td>
+</tr>
+<tr>
+<td>Backend</td>
+<td>AWS Lambda (Node.js 20.x) with Function URL</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>Stripe Checkout Sessions</td>
+</tr>
+<tr>
+<td>Newsletter Storage</td>
+<td>Google Sheets via Google Sheets API v4</td>
+</tr>
+<tr>
+<td>Rich Text</td>
+<td>Sanity Portable Text + @portabletext/react</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-static-hosting-headless-cms">Why Static Hosting + Headless CMS</h3>
+<p>This architecture was chosen for specific reasons:</p>
+<ol>
+<li><strong>Cost efficiency</strong> — S3 static hosting costs fractions of a penny per request compared to running a persistent server. For a nonprofit, this matters.</li>
+<li><strong>Zero server management</strong> — No EC2 instances, no patching, no uptime monitoring. The site is just files in a bucket.</li>
+<li><strong>CMS flexibility</strong> — Sanity's headless approach means non-technical administrators can update content without touching code. Content changes go live by publishing in Sanity Studio — no redeployment needed for CMS-driven content.</li>
+<li><strong>Security posture</strong> — Static files have minimal attack surface. The only backend exposure is through Lambda Function URLs, which handle payment processing and newsletter signups.</li>
+<li><strong>Scalability</strong> — S3 handles traffic spikes natively. Lambda scales to zero when idle and scales up automatically under load.</li>
+</ol>
+<hr />
+<div class="section-break"></div><h2 id="2-system-architecture"><span class="section-number">2.</span> System Architecture</h2>
+<hr class="section-rule">
+<h3 id="a-architecture-overview">A. Architecture Overview</h3>
+<p>The system follows a JAMstack-adjacent pattern: a statically-built React SPA served from S3, with dynamic content pulled client-side from Sanity's CDN, and serverless functions handling transactional operations (payments, newsletter signups).</p>
+<p>There is no traditional web server. The React application is compiled to static HTML/JS/CSS via Vite, uploaded to an S3 bucket configured for static website hosting, and served directly to browsers. At runtime, the React app makes API calls to two external services:</p>
+<ol>
+<li><strong>Sanity CDN</strong> — for all content (blog posts, events, team members, testimonials, donation tiers, page text)</li>
+<li><strong>AWS Lambda Function URL</strong> — for transactional operations (Stripe checkout, Stripe webhooks, newsletter signup)</li>
+</ol>
+<h3 id="b-architecture-diagram">B. Architecture Diagram</h3>
+
+<div class="diagram-container">
+<div class="flow-diagram">
+    <h4>System Architecture Overview</h4>
+
+    <div class="flow-row">
+        <div class="flow-box primary">User / Browser</div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+
+    <div class="flow-row">
+        <div class="flow-box primary">AWS S3<br><small>Static Website — React SPA</small></div>
+        <span class="flow-arrow">←→</span>
+        <div class="flow-box cloud">Sanity Content API<br><small>CDN-backed GROQ</small></div>
+    </div>
+    <div class="flow-arrow-down">↓ POST requests</div>
+
+    <div class="flow-row">
+        <div class="flow-box lambda">AWS Lambda<br><small>Node.js 20.x Function URL</small></div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+
+    <div class="flow-row">
+        <div class="flow-box ext">Stripe API<br><small>Checkout Sessions</small></div>
+        <div class="flow-box ext">Stripe Webhooks<br><small>Payment Events</small></div>
+        <div class="flow-box ext">Google Sheets<br><small>Newsletter Storage</small></div>
+    </div>
+
+    <div class="diagram-legend">
+        <span class="legend-item"><span class="legend-box" style="background:#DBEAFE; border-color:#3B82F6;"></span>Frontend</span>
+        <span class="legend-item"><span class="legend-box" style="background:#EEF2FF; border-color:#818CF8;"></span>CMS</span>
+        <span class="legend-item"><span class="legend-box" style="background:#FFF7ED; border-color:#F97316;"></span>Serverless</span>
+        <span class="legend-item"><span class="legend-box" style="background:#ECFDF5; border-color:#10B981;"></span>External Services</span>
+    </div>
+</div>
+</div>
+
+<h3 id="c-content-flow">C. Content Flow</h3>
+<ol>
+<li>A CMS administrator logs into Sanity Studio and creates or edits content (a blog post, event, testimonial, etc.).</li>
+<li>On publish, Sanity stores the content in its cloud database and makes it available via the Content API with CDN caching.</li>
+<li>When a user loads any page on the GAICOM site, the React components make client-side <code>fetch</code> calls using the Sanity client library with GROQ queries.</li>
+<li>The Sanity CDN returns JSON data.</li>
+<li>React components render the data. If the Sanity fetch fails, hardcoded fallback data is displayed instead.</li>
+</ol>
+<p>Content is fetched on every page load (no build-time static generation). This means content updates in Sanity appear on the live site as soon as the CDN cache refreshes — typically within seconds.</p>
+
+<div class="diagram-container">
+<div class="flow-diagram">
+    <h4>CMS Content Flow</h4>
+    <div class="flow-row">
+        <div class="flow-box cloud">1. Admin edits<br><small>Sanity Studio</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box cloud">2. Publish<br><small>→ Sanity CDN</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box primary">3. Browser fetches<br><small>GROQ query</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box primary">4. React renders<br><small>or fallback</small></div>
+    </div>
+</div>
+</div>
+
+
+<h3 id="d-payment-flow">D. Payment Flow</h3>
+<ol>
+<li>User visits <code>/donate</code> and selects a donation tier ($25, $50, $100, $500) or enters a custom amount ($1–$5,000).</li>
+<li>The React frontend sends a <code>POST</code> request to the Lambda endpoint <code>/create-checkout-session</code> with <code>{ "amount": &lt;number&gt; }</code>.</li>
+<li>Lambda validates the amount (must be between 1 and 5000), then calls <code>stripe.checkout.sessions.create()</code> with:</li>
+<li>Payment method: card</li>
+<li>Product name: "GAICOM Donation"</li>
+<li>Amount converted to cents (<code>amount * 100</code>)</li>
+<li>Success URL: <code>{SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}</code></li>
+<li>Cancel URL: <code>{CANCEL_URL}</code></li>
+<li>Lambda returns the Stripe-hosted checkout page URL to the frontend.</li>
+<li>The frontend redirects the user to Stripe's checkout page via <code>window.location.href = url</code>.</li>
+<li>On successful payment, Stripe redirects the user to <code>/donate/success?session_id=cs_...</code>.</li>
+<li>On cancellation, Stripe redirects to <code>/donate/cancel</code>.</li>
+<li>Independently, Stripe sends a webhook <code>POST</code> to the Lambda <code>/webhook</code> endpoint. Lambda verifies the signature using <code>STRIPE_WEBHOOK_SECRET</code>, and on <code>checkout.session.completed</code>, logs the donation details (session ID, amount, currency, email) to CloudWatch.</li>
+</ol>
+
+<div class="diagram-container">
+<div class="flow-diagram">
+    <h4>Donation Payment Flow</h4>
+    <div class="flow-row">
+        <div class="flow-box primary">1. User selects amount<br><small>/donate page</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box lambda">2. Create checkout session<br><small>Lambda validates amount</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box ext">3. Stripe Checkout<br><small>Hosted payment page</small></div>
+    </div>
+    <div class="flow-arrow-down">↓ On success</div>
+    <div class="flow-row">
+        <div class="flow-box primary">4. Success redirect<br><small>/donate/success</small></div>
+        <span class="flow-arrow">&nbsp;&nbsp;&nbsp;</span>
+        <div class="flow-box ext">5. Webhook → Lambda<br><small>Logs to CloudWatch</small></div>
+    </div>
+</div>
+</div>
+
+<h3 id="e-newsletter-flow">E. Newsletter Flow</h3>
+<ol>
+<li>User fills in first name, last name, and email in the newsletter form (visible on the Home page).</li>
+<li>The React frontend validates inputs client-side (non-empty names, valid email format).</li>
+<li>On submit, a <code>POST</code> request is sent to the Lambda <code>/newsletter</code> endpoint with <code>{ firstName, lastName, email }</code>.</li>
+<li>Lambda validates the inputs server-side (same rules as frontend).</li>
+<li>Lambda authenticates with Google via a service account credential stored in <code>GOOGLE_SERVICE_ACCOUNT_JSON</code>.</li>
+<li>Lambda appends a row to a Google Sheet (<code>Sheet1!A:D</code>) with columns: firstName, lastName, email, ISO timestamp.</li>
+<li>Lambda returns <code>{ "success": true }</code>.</li>
+<li>The frontend shows a confirmation message: "Thank you for subscribing!"</li>
+</ol>
+
+<div class="diagram-container">
+<div class="flow-diagram">
+    <h4>Newsletter Signup Flow</h4>
+    <div class="flow-row">
+        <div class="flow-box primary">1. User fills form<br><small>Name + Email</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box lambda">2. POST /newsletter<br><small>Lambda validates</small></div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box ext">3. Google Sheets API<br><small>Appends row</small></div>
+    </div>
+    <div class="flow-arrow-down">↓</div>
+    <div class="flow-row">
+        <div class="flow-box primary">4. Success message<br><small>"Thank you for subscribing!"</small></div>
+    </div>
+</div>
+</div>
+
+<h3 id="f-local-vs-production-behavior">F. Local vs Production Behavior</h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Local (dev)</th>
+<th>Production (S3)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontend URL</td>
+<td><code>http://localhost:5173</code></td>
+<td><code>http://gaicom-test-v1.s3-website-us-east-1.amazonaws.com</code></td>
+</tr>
+<tr>
+<td>Vite Dev Server</td>
+<td>Yes (HMR enabled)</td>
+<td>No — static files served from S3</td>
+</tr>
+<tr>
+<td>Sanity Data</td>
+<td>Same CDN endpoint</td>
+<td>Same CDN endpoint</td>
+</tr>
+<tr>
+<td>Lambda API Base</td>
+<td>Set via <code>VITE_DONATE_API_BASE</code> in <code>.env.local</code></td>
+<td>Baked into build from <code>.env.local</code> at build time</td>
+</tr>
+<tr>
+<td>CORS</td>
+<td>Lambda allows <code>localhost:5173</code></td>
+<td>Lambda allows the S3 bucket URL</td>
+</tr>
+<tr>
+<td>Stripe Success URL</td>
+<td>Configured in Lambda env vars — must match deployment</td>
+<td>Points to S3 URL</td>
+</tr>
+<tr>
+<td>SPA Routing</td>
+<td>Vite dev server handles all routes</td>
+<td>S3 must have error document set to <code>index.html</code> for client-side routing to work</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<div class="section-break"></div><h2 id="3-frontend-technical-documentation"><span class="section-number">3.</span> Frontend Technical Documentation</h2>
+<hr class="section-rule">
+<h3 id="folder-structure">Folder Structure</h3>
+<pre><code>gaicom/
+├── index.html                      # Vite entry HTML
+├── vite.config.js                  # Vite + React + Tailwind plugins
+├── package.json                    # Dependencies and scripts
+├── .env                            # Sanity project credentials
+├── .env.local                      # Lambda API base URL
+├── .env.example                    # Template for environment setup
+├── eslint.config.js                # ESLint flat config
+├── public/
+│   ├── gaicom-logo.png             # Favicon and logo
+│   ├── blog-placeholder.svg        # Fallback blog image
+│   ├── hero-1.jpg ... hero-4.png   # Hero carousel fallback images
+│   ├── team/                       # Team member photos (8 files)
+│   └── blog/
+│       └── gaicom-launch.svg       # Blog post image
+├── src/
+│   ├── main.jsx                    # React DOM entry point
+│   ├── App.jsx                     # BrowserRouter + Routes + Layout
+│   ├── index.css                   # Tailwind imports + custom theme + animations
+│   ├── Gaicom-logo.png             # Logo asset (in-source)
+│   ├── pages/
+│   │   ├── Home.jsx                # Landing page (hero, mission, vision, examples, testimonials, CTA, newsletter)
+│   │   ├── About.jsx               # About page (story, values, team)
+│   │   ├── Blog.jsx                # Blog listing page
+│   │   ├── BlogPost.jsx            # Individual blog post (dynamic slug)
+│   │   ├── Events.jsx              # Events with upcoming/past tabs
+│   │   ├── Resources.jsx           # Resource directory
+│   │   ├── Donate.jsx              # Donation page
+│   │   ├── DonateSuccess.jsx       # Post-payment success
+│   │   └── DonateCancel.jsx        # Post-payment cancellation
+│   ├── components/
+│   │   ├── Navbar.jsx              # Sticky navigation with mobile menu
+│   │   ├── Footer.jsx              # Footer with contact, social links, quick links
+│   │   ├── Button.jsx              # Polymorphic button (to/href/onClick)
+│   │   ├── Card.jsx                # Reusable card with image/icon/CTA
+│   │   ├── SectionWrapper.jsx      # Section container with padding/dark mode
+│   │   ├── FormInput.jsx           # Form input with label and error display
+│   │   ├── GaicomLogo.jsx          # Inline SVG logo component
+│   │   ├── HeroCarousel.jsx        # Auto-rotating hero images (5s interval)
+│   │   ├── MissionSection.jsx      # Mission audience cards
+│   │   ├── VisionSection.jsx       # Vision with animated network SVG
+│   │   ├── ExamplesSection.jsx     # AI use case examples
+│   │   ├── TestimonialsSection.jsx # Auto-rotating testimonials (6s interval)
+│   │   ├── CTASection.jsx          # Call-to-action section
+│   │   ├── NewsletterSignup.jsx    # Newsletter form with API integration
+│   │   ├── TeamSection.jsx         # Team member grid with avatar fallback
+│   │   ├── BlogCard.jsx            # Blog post card for grid
+│   │   ├── EventCard.jsx           # Event card component
+│   │   ├── ResourceList.jsx        # Resource grid grouped by category
+│   │   └── DonateInfo.jsx          # Donation tiers + custom amount + Stripe checkout
+│   ├── lib/
+│   │   ├── sanityClient.js         # Sanity client init + image URL builder
+│   │   ├── sanityQueries.js        # All GROQ queries (13 exports)
+│   │   └── portableTextSerializer.jsx  # Portable Text rendering components
+│   └── data/
+│       └── blogData.js             # Fallback blog post data
+├── lambda/
+│   └── index.mjs                   # AWS Lambda handler (Stripe + Newsletter + Webhook)
+└── sanity-studio/                  # Sanity Studio project (separate package)
+    ├── sanity.config.ts
+    ├── sanity.cli.ts
+    └── schemaTypes/                # 12 schema definitions
+</code></pre>
+<h3 id="component-architecture">Component Architecture</h3>
+<p>The application uses a flat component architecture with no nesting directories. Components fall into three categories:</p>
+<p><strong>Layout Components</strong> — Rendered once per page load, wrapping all routes:
+- <code>Navbar</code> — Fixed-position navigation bar with scroll detection, mobile hamburger menu, and active link highlighting. Uses <code>useRef</code> for focus management and <code>useEffect</code> for scroll event listeners.
+- <code>Footer</code> — Fetches site settings from Sanity for email, location, and social links. Falls back to hardcoded values.</p>
+<p><strong>Page Components</strong> — Mapped to routes in <code>App.jsx</code>. Each page fetches its own Sanity data in a <code>useEffect</code> on mount:
+- <code>Home</code> — Composes HeroCarousel, MissionSection, VisionSection, ExamplesSection, TestimonialsSection, CTASection, and NewsletterSignup.
+- <code>About</code> — Fetches about page content + renders TeamSection.
+- <code>Blog</code> — Fetches blog post list, renders BlogCard grid.
+- <code>BlogPost</code> — Fetches single post by slug, renders Portable Text or fallback plain text.
+- <code>Events</code> — Fetches upcoming and past events, renders tabbed EventCard lists.
+- <code>Resources</code> — Renders ResourceList.
+- <code>Donate</code> — Renders DonateInfo.
+- <code>DonateSuccess</code> — Reads <code>session_id</code> from URL query params, shows confirmation.
+- <code>DonateCancel</code> — Shows cancellation notice with try-again link.</p>
+<p><strong>Feature Components</strong> — Reusable UI sections with data-fetching capabilities:
+- <code>HeroCarousel</code> — Fetches hero slides from Sanity, auto-rotates every 5 seconds, renders navigation dots and arrows.
+- <code>TestimonialsSection</code> — Fetches testimonials, auto-rotates every 6 seconds.
+- <code>DonateInfo</code> — Fetches donation tiers and donation page content from Sanity, initiates Stripe checkout.
+- <code>NewsletterSignup</code> — Fetches newsletter heading/subheading from Sanity, handles form submission to Lambda.
+- <code>ResourceList</code> — Fetches resources, groups by category, renders external links.</p>
+<h3 id="blog-routing-system">Blog Routing System</h3>
+<p>Blog uses dynamic slug-based routing:</p>
+<p><strong>Route definition</strong> in <code>App.jsx</code>:</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">&lt;Route path=&quot;/blog/:slug&quot; element={&lt;BlogPost /&gt;} /&gt;
+</code></pre>
+<p><strong>Slug extraction</strong> in <code>BlogPost.jsx</code>:</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const { slug } = useParams();
+</code></pre>
+<p><strong>Data fetching</strong> — The component first attempts to fetch from Sanity using the slug parameter:</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const data = await client.fetch(BLOG_POST_BY_SLUG_QUERY, { slug });
+</code></pre>
+<p>The GROQ query filters by <code>slug.current == $slug</code>:</p>
+<pre><span class="code-lang">GROQ</span><code class="language-groq">*[_type == &quot;blogPost&quot; &amp;&amp; slug.current == $slug &amp;&amp; !(_id in path(&quot;drafts.**&quot;))][0]{ ... }
+</code></pre>
+<p><strong>Fallback</strong> — If Sanity returns no data (or the fetch fails), the component falls back to the local <code>blogData.js</code> file:</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const fallback = getBlogBySlug(slug);
+</code></pre>
+<p><strong>Content rendering</strong> — The component detects whether the post body is Portable Text (from Sanity) or plain text (from fallback data):</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const hasPortableText = Array.isArray(data.body) &amp;&amp; data.body.length &gt; 0 &amp;&amp; data.body[0]?._type;
+</code></pre>
+<p>If Portable Text, it renders using <code>@portabletext/react</code> with custom serializers. Otherwise, it renders paragraphs from the fallback <code>content</code> array.</p>
+<h3 id="cms-queries-groq">CMS Queries (GROQ)</h3>
+<p>All GROQ queries are centralized in <code>src/lib/sanityQueries.js</code>. There are 13 exported queries:</p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th>Purpose</th>
+<th>Used By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SITE_SETTINGS_QUERY</code></td>
+<td>Site name, logo, contact email, location, social links</td>
+<td>Footer</td>
+</tr>
+<tr>
+<td><code>HOME_PAGE_QUERY</code></td>
+<td>All home page section text + ordered arrays</td>
+<td>HeroCarousel, MissionSection, ExamplesSection, NewsletterSignup, CTASection, TestimonialsSection</td>
+</tr>
+<tr>
+<td><code>HERO_SLIDES_QUERY</code></td>
+<td>Active hero carousel images in order</td>
+<td>HeroCarousel</td>
+</tr>
+<tr>
+<td><code>TESTIMONIALS_QUERY</code></td>
+<td>Active testimonials in order</td>
+<td>TestimonialsSection</td>
+</tr>
+<tr>
+<td><code>TEAM_MEMBERS_QUERY</code></td>
+<td>Active team members in order</td>
+<td>TeamSection</td>
+</tr>
+<tr>
+<td><code>UPCOMING_EVENTS_QUERY</code></td>
+<td>Events with <code>startDateTime &gt; now()</code></td>
+<td>Events page</td>
+</tr>
+<tr>
+<td><code>PAST_EVENTS_QUERY</code></td>
+<td>Events with <code>startDateTime &lt; now()</code></td>
+<td>Events page</td>
+</tr>
+<tr>
+<td><code>RESOURCES_QUERY</code></td>
+<td>Active resources ordered by category then order</td>
+<td>ResourceList</td>
+</tr>
+<tr>
+<td><code>BLOG_POSTS_QUERY</code></td>
+<td>Published blog posts (excludes drafts)</td>
+<td>Blog page</td>
+</tr>
+<tr>
+<td><code>BLOG_POST_BY_SLUG_QUERY</code></td>
+<td>Single blog post with author details</td>
+<td>BlogPost page</td>
+</tr>
+<tr>
+<td><code>ABOUT_PAGE_QUERY</code></td>
+<td>About page hero, story, values</td>
+<td>About page</td>
+</tr>
+<tr>
+<td><code>DONATION_TIERS_QUERY</code></td>
+<td>Active donation tiers in order</td>
+<td>DonateInfo</td>
+</tr>
+<tr>
+<td><code>DONATE_PAGE_QUERY</code></td>
+<td>Impact section content and custom amount limits</td>
+<td>DonateInfo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="state-management">State Management</h3>
+<p>The application uses <strong>component-level React state exclusively</strong>. There is no global state library (no Redux, no Zustand, no Context API). Each component manages its own state via <code>useState</code> and <code>useEffect</code>.</p>
+<p>Common pattern across all data-fetching components:</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const [data, setData] = useState(FALLBACK_DATA);
+
+useEffect(() =&gt; {
+  async function fetchData() {
+    try {
+      const result = await client.fetch(QUERY);
+      if (result) setData(result);
+    } catch (err) {
+      console.error('Failed to fetch:', err);
+      // fallback data remains in state
+    }
+  }
+  fetchData();
+}, []);
+</code></pre>
+<p>This pattern ensures the UI always renders — either with CMS data or with hardcoded fallbacks.</p>
+<h3 id="api-calls-to-lambda">API Calls to Lambda</h3>
+<p>There are exactly two API integrations with the Lambda backend:</p>
+<p><strong>1. Stripe Checkout</strong> (<code>src/components/DonateInfo.jsx</code>):</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const API_BASE = import.meta.env.VITE_DONATE_API_BASE || '';
+
+const res = await fetch(`${API_BASE}/create-checkout-session`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ amount }),
+});
+const { url } = await res.json();
+window.location.href = url;  // Full page redirect to Stripe
+</code></pre>
+<p><strong>2. Newsletter Signup</strong> (<code>src/components/NewsletterSignup.jsx</code>):</p>
+<pre><span class="code-lang">JSX</span><code class="language-jsx">const API_BASE = import.meta.env.VITE_DONATE_API_BASE || '';
+
+const res = await fetch(`${API_BASE}/newsletter`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ firstName, lastName, email }),
+});
+</code></pre>
+<p>Both use the same <code>VITE_DONATE_API_BASE</code> environment variable as their base URL.</p>
+<h3 id="environment-variable-usage">Environment Variable Usage</h3>
+<p>The frontend uses four Vite environment variables (prefixed with <code>VITE_</code> to be exposed to client code):</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Used In</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VITE_SANITY_PROJECT_ID</code></td>
+<td>Sanity project ID (<code>02ubmxqm</code>)</td>
+<td><code>sanityClient.js</code></td>
+</tr>
+<tr>
+<td><code>VITE_SANITY_DATASET</code></td>
+<td>Sanity dataset name (<code>production</code>)</td>
+<td><code>sanityClient.js</code></td>
+</tr>
+<tr>
+<td><code>VITE_SANITY_API_VERSION</code></td>
+<td>Sanity API version (<code>2025-01-01</code>)</td>
+<td><code>sanityClient.js</code></td>
+</tr>
+<tr>
+<td><code>VITE_DONATE_API_BASE</code></td>
+<td>Lambda Function URL base</td>
+<td><code>DonateInfo.jsx</code>, <code>NewsletterSignup.jsx</code></td>
+</tr>
+</tbody>
+</table>
+<p>These are accessed via <code>import.meta.env.VITE_*</code> (Vite's environment variable mechanism). They are embedded into the JavaScript bundle at build time — they are not secret.</p>
+<h3 id="build-process">Build Process</h3>
+<p><strong>Command:</strong> <code>npm run build</code></p>
+<p>This runs <code>vite build</code>, which:</p>
+<ol>
+<li>Reads <code>index.html</code> as the entry point.</li>
+<li>Processes <code>src/main.jsx</code> and all imports.</li>
+<li>Compiles JSX to JavaScript.</li>
+<li>Processes Tailwind CSS via the <code>@tailwindcss/vite</code> plugin (no separate PostCSS config needed).</li>
+<li>Tree-shakes unused code.</li>
+<li>Outputs optimized, hashed bundles to the <code>dist/</code> directory.</li>
+</ol>
+<p><strong>The <code>dist/</code> directory contains:</strong>
+- <code>index.html</code> — The entry HTML file
+- <code>assets/</code> — Hashed JS and CSS bundles
+- All files from <code>public/</code> (images, SVGs, etc.)</p>
+<h3 id="s3-deployment">S3 Deployment</h3>
+<p>After <code>npm run build</code>:</p>
+<ol>
+<li>The entire contents of <code>dist/</code> are uploaded to the S3 bucket <code>gaicom-test-v1</code>.</li>
+<li>The bucket is configured for static website hosting with:</li>
+<li>Index document: <code>index.html</code></li>
+<li>Error document: <code>index.html</code> (required for SPA client-side routing — any 404 returns the React app, which then handles the route)</li>
+<li>The bucket policy allows public read access.</li>
+<li>The site is accessible at <code>http://gaicom-test-v1.s3-website-us-east-1.amazonaws.com</code>.</li>
+</ol>
+<p>After deployment, the React app loads in the browser, fetches content from Sanity's CDN, and functions identically to the local dev version.</p>
+<hr />
+<div class="section-break"></div><h2 id="4-backend-lambda-documentation"><span class="section-number">4.</span> Backend / Lambda Documentation</h2>
+<hr class="section-rule">
+<h3 id="overview">Overview</h3>
+<p>All backend logic is contained in a single file: <code>lambda/index.mjs</code>. This Lambda function is exposed via an AWS Lambda Function URL (not API Gateway). It handles three routes and a CORS preflight handler.</p>
+<p><strong>Runtime:</strong> Node.js 20.x
+<strong>Dependencies:</strong> <code>stripe</code>, <code>googleapis</code></p>
+<h3 id="route-post-create-checkout-session">Route: POST /create-checkout-session</h3>
+<p><strong>Purpose:</strong> Creates a Stripe Checkout Session for a donation and returns the Stripe-hosted checkout page URL.</p>
+<p><strong>Endpoint:</strong> <code>POST {LAMBDA_FUNCTION_URL}/create-checkout-session</code></p>
+<p><strong>Request format:</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;amount&quot;: 50
+}
+</code></pre>
+<p><strong>Validation rules:</strong>
+- <code>amount</code> must be a number
+- Must be between 1 and 5000 (inclusive)</p>
+<p><strong>Success response (200):</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;url&quot;: &quot;https://checkout.stripe.com/c/pay/cs_test_...&quot;
+}
+</code></pre>
+<p><strong>Error responses:</strong></p>
+<p>Invalid JSON (400):</p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;error&quot;: &quot;Invalid JSON body&quot;
+}
+</code></pre>
+<p>Invalid amount (400):</p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;error&quot;: &quot;Amount must be between $1 and $5,000&quot;
+}
+</code></pre>
+<p>Server error (500):</p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;error&quot;: &quot;Failed to create checkout session&quot;
+}
+</code></pre>
+<p><strong>Stripe integration logic:</strong></p>
+<pre><span class="code-lang">JavaScript</span><code class="language-javascript">const session = await stripe.checkout.sessions.create({
+  payment_method_types: ['card'],
+  mode: 'payment',
+  line_items: [{
+    price_data: {
+      currency: 'usd',
+      product_data: { name: 'GAICOM Donation' },
+      unit_amount: Math.round(amount * 100),  // Stripe uses cents
+    },
+    quantity: 1,
+  }],
+  success_url: process.env.SUCCESS_URL + '?session_id={CHECKOUT_SESSION_ID}',
+  cancel_url: process.env.CANCEL_URL,
+});
+</code></pre>
+<p><strong>Environment variables used:</strong>
+- <code>STRIPE_SECRET_KEY</code> — Stripe API key
+- <code>SUCCESS_URL</code> — Redirect URL after successful payment
+- <code>CANCEL_URL</code> — Redirect URL after cancelled payment</p>
+<hr />
+<h3 id="route-post-webhook">Route: POST /webhook</h3>
+<p><strong>Purpose:</strong> Receives and validates Stripe webhook events. Logs completed donation information to CloudWatch.</p>
+<p><strong>Endpoint:</strong> <code>POST {LAMBDA_FUNCTION_URL}/webhook</code></p>
+<p><strong>Request format:</strong> Raw request body from Stripe with <code>stripe-signature</code> header.</p>
+<p><strong>Webhook validation logic:</strong></p>
+<pre><span class="code-lang">JavaScript</span><code class="language-javascript">const sig = event.headers?.['stripe-signature'];
+const rawBody = event.isBase64Encoded
+  ? Buffer.from(event.body, 'base64').toString('utf-8')
+  : event.body;
+
+const stripeEvent = stripe.webhooks.constructEvent(
+  rawBody,
+  sig,
+  process.env.STRIPE_WEBHOOK_SECRET
+);
+</code></pre>
+<p>The function handles base64-encoded bodies (Lambda Function URLs may base64-encode the body). It uses <code>stripe.webhooks.constructEvent()</code> to verify the webhook signature, preventing forged requests.</p>
+<p><strong>Handled event:</strong> <code>checkout.session.completed</code></p>
+<p>On this event, the function logs:
+- Session ID
+- Amount (converted from cents to dollars)
+- Currency
+- Customer email</p>
+<p><strong>Success response (200):</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;received&quot;: true
+}
+</code></pre>
+<p><strong>Signature failure response (400):</strong></p>
+<pre><code>Webhook signature verification failed
+</code></pre>
+<p><strong>Environment variables used:</strong>
+- <code>STRIPE_SECRET_KEY</code> — For Stripe client initialization
+- <code>STRIPE_WEBHOOK_SECRET</code> — For webhook signature verification</p>
+<hr />
+<h3 id="route-post-newsletter">Route: POST /newsletter</h3>
+<p><strong>Purpose:</strong> Validates subscriber data and appends it to a Google Sheet.</p>
+<p><strong>Endpoint:</strong> <code>POST {LAMBDA_FUNCTION_URL}/newsletter</code></p>
+<p><strong>Request format:</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;firstName&quot;: &quot;Jane&quot;,
+  &quot;lastName&quot;: &quot;Doe&quot;,
+  &quot;email&quot;: &quot;jane@example.com&quot;
+}
+</code></pre>
+<p><strong>Validation rules:</strong>
+- <code>firstName</code>: Required, non-empty after trimming
+- <code>lastName</code>: Required, non-empty after trimming
+- <code>email</code>: Required, must match <code>/^[^\s@]+@[^\s@]+\.[^\s@]+$/</code></p>
+<p><strong>Success response (200):</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;success&quot;: true
+}
+</code></pre>
+<p><strong>Validation error response (400):</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;error&quot;: &quot;Validation failed&quot;,
+  &quot;errors&quot;: {
+    &quot;firstName&quot;: &quot;First name is required.&quot;,
+    &quot;email&quot;: &quot;Please enter a valid email.&quot;
+  }
+}
+</code></pre>
+<p><strong>Server error response (500):</strong></p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;error&quot;: &quot;Failed to save subscription&quot;
+}
+</code></pre>
+<p><strong>Google Sheets integration:</strong></p>
+<pre><span class="code-lang">JavaScript</span><code class="language-javascript">const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+const auth = new google.auth.GoogleAuth({
+  credentials,
+  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+});
+const sheets = google.sheets({ version: 'v4', auth });
+
+await sheets.spreadsheets.values.append({
+  spreadsheetId: process.env.SPREADSHEET_ID,
+  range: 'Sheet1!A:D',
+  valueInputOption: 'USER_ENTERED',
+  requestBody: {
+    values: [[firstName, lastName, email, new Date().toISOString()]],
+  },
+});
+</code></pre>
+<p><strong>Environment variables used:</strong>
+- <code>GOOGLE_SERVICE_ACCOUNT_JSON</code> — Full JSON credential for a Google service account
+- <code>SPREADSHEET_ID</code> — The ID of the target Google Sheet</p>
+<hr />
+<h3 id="cors-strategy">CORS Strategy</h3>
+<p>CORS is handled entirely within the Lambda function — there is no API Gateway or CloudFront layer.</p>
+<p><strong>Allowed origins:</strong></p>
+<pre><span class="code-lang">JavaScript</span><code class="language-javascript">const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://gaicom-test-v1.s3-website-us-east-1.amazonaws.com',
+];
+</code></pre>
+<p><strong>Header logic:</strong></p>
+<pre><span class="code-lang">JavaScript</span><code class="language-javascript">function getCorsHeaders(event) {
+  const origin = event?.headers?.origin || '';
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Headers': 'content-type, stripe-signature',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  };
+}
+</code></pre>
+<p>The function checks the request <code>origin</code> header against the whitelist. If the origin matches, it echoes it back. If not, it defaults to <code>localhost:5173</code>. This means unknown origins will receive CORS headers for localhost, which browsers will correctly reject in production.</p>
+<p><strong>Preflight handling:</strong> <code>OPTIONS</code> requests return <code>204 No Content</code> with the CORS headers.</p>
+<p><strong>Allowed headers:</strong> <code>content-type</code> (for JSON payloads) and <code>stripe-signature</code> (for webhook verification).</p>
+<p><strong>Allowed methods:</strong> <code>POST</code> and <code>OPTIONS</code> only. No <code>GET</code>, <code>PUT</code>, or <code>DELETE</code>.</p>
+<hr />
+<h3 id="error-handling-strategy">Error Handling Strategy</h3>
+<p>Every route follows the same error handling pattern:</p>
+<ol>
+<li><strong>Parse body</strong> — Wrapped in try/catch. Returns <code>400</code> with <code>"Invalid JSON body"</code> on parse failure.</li>
+<li><strong>Validate inputs</strong> — Returns <code>400</code> with specific error messages.</li>
+<li><strong>Execute business logic</strong> — Wrapped in try/catch. Returns <code>500</code> with a generic message on failure. Actual error messages are logged to CloudWatch via <code>console.error</code>.</li>
+<li><strong>Fallback</strong> — Any unmatched route returns <code>404</code> with <code>{ "error": "Not found" }</code>.</li>
+</ol>
+<p>All responses include CORS headers. Error details are never exposed to the client beyond generic messages.</p>
+<hr />
+<div class="section-break"></div><h2 id="5-cms-user-guide-non-tech-friendly"><span class="section-number">5.</span> CMS User Guide (Non-Tech Friendly)</h2>
+<hr class="section-rule">
+<h3 id="51-five-minute-quick-start">5.1 Five-Minute Quick Start</h3>
+<p>If you are new to the CMS, complete these steps in order:</p>
+<ul>
+<li><span class="checkbox-box"></span> Get your Sanity Studio login credentials from the developer (Google or email/password).</li>
+<li><span class="checkbox-box"></span> Open the Sanity Studio URL in your browser and log in.</li>
+<li><span class="checkbox-box"></span> Explore the left sidebar — click through "Home Page," "Blog Posts," "Events," etc. to see what is already there.</li>
+<li><span class="checkbox-box"></span> Open any existing document, read the field descriptions, and notice the red asterisks on required fields.</li>
+<li><span class="checkbox-box"></span> Make a small edit to a non-critical field (e.g., change a testimonial's role text), then click <strong>"Publish"</strong>.</li>
+<li><span class="checkbox-box"></span> Open the live website in another tab and verify your change appears within 30–60 seconds.</li>
+<li><span class="checkbox-box"></span> Read the "Golden Rules" section (5.5) below before making further edits.</li>
+</ul>
+<h3 id="52-logging-in">5.2 Logging In</h3>
+<ol>
+<li>Open the Sanity Studio URL provided by your developer in any modern browser (Chrome, Firefox, Edge, Safari).</li>
+<li>Log in with your Sanity account — either Google sign-in or email/password.</li>
+<li>After logging in, you will see the <strong>sidebar</strong> on the left with all content sections.</li>
+</ol>
+<p>If you cannot log in, confirm with your developer that your email has been added to the Sanity project as a member.</p>
+<h3 id="53-navigation-basics">5.3 Navigation Basics</h3>
+<p>The sidebar is organized into two groups:</p>
+<p><strong>Singleton Pages</strong> — One document each. You edit the existing document directly. You cannot create a second copy.</p>
+<table>
+<thead>
+<tr>
+<th>Sidebar Item</th>
+<th>What It Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site Settings</td>
+<td>Site name, logo, contact email, location, social media links</td>
+</tr>
+<tr>
+<td>Home Page</td>
+<td>Hero text, mission section, vision heading, examples, testimonials heading, CTA, newsletter text</td>
+</tr>
+<tr>
+<td>About Page</td>
+<td>Hero heading, story paragraphs, values</td>
+</tr>
+<tr>
+<td>Donate Page</td>
+<td>Impact heading/stats, testimonial quote, custom donation amount limits</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Collections</strong> — You can create many documents of each type.</p>
+<table>
+<thead>
+<tr>
+<th>Sidebar Item</th>
+<th>What It Controls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hero Slides</td>
+<td>Rotating background images on the home page hero</td>
+</tr>
+<tr>
+<td>Testimonials</td>
+<td>Quotes displayed in the testimonials carousel</td>
+</tr>
+<tr>
+<td>Team Members</td>
+<td>People shown on the About page</td>
+</tr>
+<tr>
+<td>Events</td>
+<td>Upcoming and past events on the Events page</td>
+</tr>
+<tr>
+<td>Resources</td>
+<td>Links, files, and tools on the Resources page</td>
+</tr>
+<tr>
+<td>Blog Posts</td>
+<td>Articles on the Blog page</td>
+</tr>
+<tr>
+<td>Authors</td>
+<td>Blog post author profiles</td>
+</tr>
+<tr>
+<td>Donation Tiers</td>
+<td>Preset donation amounts shown on the Donate page</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabs within documents.</strong> Some documents (Blog Posts, Events, Home Page, About Page) split their fields into tabs at the top of the editor — for example "Content," "Media," "Metadata," and "SEO." Click each tab to see all fields.</p>
+<h3 id="54-how-publishing-works">5.4 How Publishing Works</h3>
+<p>Sanity uses a <strong>draft/published</strong> system:</p>
+<ul>
+<li>When you create a new document or edit an existing one, your changes are saved as a <strong>draft</strong>. Drafts are not visible on the live website.</li>
+<li>When you click <strong>"Publish"</strong> (bottom-right of the editor), the draft becomes the published version. The live website will reflect the change within seconds to one minute (CDN caching may cause a brief delay).</li>
+<li>If you want to undo unsaved changes, click <strong>"Discard Changes"</strong> to revert to the last published version.</li>
+<li>You can tell if a document has unpublished changes by looking for the yellow "edited" indicator next to the document title.</li>
+</ul>
+<div class="callout callout-important"><div class="callout-label">Important</div><p>You cannot publish if there are validation errors. The CMS will highlight fields in red and display error messages explaining what needs to be fixed.</p></div>
+<h3 id="55-golden-rules-and-guardrails">5.5 Golden Rules and Guardrails</h3>
+<p>The CMS has two types of rules: <strong>enforced guardrails</strong> that the system physically prevents you from violating, and <strong>manual rules</strong> that are team policy and require your attention.</p>
+<h4 id="55a-enforced-guardrails-the-cms-will-stop-you">5.5a Enforced Guardrails (The CMS Will Stop You)</h4>
+<p>These rules are built into the CMS validation. If you violate them, the Publish button will be blocked and you will see an error message.</p>
+<p><strong>Limits on active items:</strong>
+- <strong>Hero Slides:</strong> Maximum <strong>4</strong> active slides at a time. The CMS will reject a 5th active slide with the message: "Maximum 4 active hero slides allowed. Deactivate another slide first."
+- <strong>Testimonials:</strong> Maximum <strong>10</strong> active testimonials at a time.
+- <strong>Donation Tiers:</strong> Maximum <strong>6</strong> active tiers at a time.</p>
+<p><strong>Unique order numbers:</strong>
+- <strong>Hero Slides, Testimonials, Donation Tiers:</strong> Each active item must have a unique order number. If you try to assign the same order number as another item, the CMS will tell you which item already uses that number.
+- <strong>Team Members, Resources:</strong> Order numbers must also be unique if provided. For resources, uniqueness is checked within the same category.</p>
+<p><strong>Only one featured donation tier:</strong>
+- Only one donation tier can have the "Featured (Most Popular)" toggle turned on. If another tier is already featured, you must unmark it first.</p>
+<p><strong>Required fields (red asterisks):</strong>
+- Most content types have required fields that must be filled in before publishing. The CMS displays specific error messages for each. See the step-by-step guides below for exactly which fields are required per content type.</p>
+<p><strong>Character limits:</strong>
+- Many text fields have minimum and maximum character limits. The CMS displays the error inline if you exceed them.</p>
+<p><strong>Cross-field validation:</strong>
+- <strong>Events:</strong> If the event is in the future (start date is after today), a registration link is required.
+- <strong>Events:</strong> If you set an end date/time, it must be after the start date/time.
+- <strong>Blog Posts:</strong> If you set an "Updated At" date, it must be after the "Published At" date.
+- <strong>Blog Posts:</strong> Read Time must follow the format "X min read" (e.g., "5 min read").
+- <strong>Donate Page:</strong> If you add a testimonial quote, you must also add a testimonial author (and vice versa).
+- <strong>Donate Page:</strong> The custom amount maximum must be greater than the custom amount minimum.
+- <strong>Resources:</strong> Each resource must have either an emoji icon OR an uploaded icon image (or both).</p>
+<h4 id="55b-manual-rules-team-policy-not-enforced-by-the-cms">5.5b Manual Rules (Team Policy — Not Enforced by the CMS)</h4>
+<p>These are best practices your team should follow. The CMS will not stop you from breaking them.</p>
+<ul>
+<li><strong>Do not delete singleton pages</strong> (Site Settings, Home Page, About Page, Donate Page). The website will fall back to default text instead of your content.</li>
+<li><strong>Do not delete authors that are linked to blog posts.</strong> Deleting the author will cause linked blog posts to display no author name.</li>
+<li><strong>Do not change a blog post or event slug after sharing the URL.</strong> Old links will break.</li>
+<li><strong>Keep images under 500KB.</strong> Large images slow down the website. The CMS accepts any file size, but performance suffers.</li>
+<li><strong>Use recommended image dimensions:</strong> Hero slides at 1920x800+ (landscape), blog images at 800px+ wide, team photos at 400x400+ (square).</li>
+<li><strong>Always set the "Active" toggle intentionally.</strong> Items with Active set to false will not appear on the website at all, even if fully filled out.</li>
+</ul>
+<h3 id="56-step-by-step-managing-hero-slides">5.6 Step-by-Step: Managing Hero Slides</h3>
+<p>Hero slides are the rotating background images in the hero section at the top of the home page.</p>
+<p><strong>To add a new hero slide:</strong>
+1. Click <strong>"Hero Slides"</strong> in the sidebar.
+2. Click the <strong>"+"</strong> button at the top to create a new slide.
+3. Fill in the required fields:
+   - <strong>Title (Internal Reference)</strong> — A label to identify this slide in the studio (1–100 characters). Not shown on the website.
+   - <strong>Image</strong> — Upload a high-resolution landscape image (recommended 1920x800 or larger). Use the hotspot tool to set the focal point.
+   - <strong>Alt Text</strong> — Describe what the image shows for screen readers and SEO (5–200 characters). Example: "Community members collaborating on AI project."
+   - <strong>Order</strong> — A number from 1–4 that sets the slide position. Must be unique — no two slides can share the same order number.
+   - <strong>Active</strong> — Toggle on to display this slide. Maximum 4 active slides allowed.
+4. Click <strong>"Publish"</strong>.</p>
+<p><strong>To deactivate a slide without deleting it:</strong>
+1. Open the slide.
+2. Toggle <strong>"Active"</strong> to off.
+3. Click <strong>"Publish"</strong>.
+The slide will no longer appear on the website but will remain in the CMS for future use. Its list entry will show "[INACTIVE]".</p>
+<h3 id="57-step-by-step-managing-testimonials">5.7 Step-by-Step: Managing Testimonials</h3>
+<p><strong>To add a new testimonial:</strong>
+1. Click <strong>"Testimonials"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new testimonial.
+3. Fill in the required fields:
+   - <strong>Quote</strong> — The testimonial text (10–500 characters).
+   - <strong>Author</strong> — Full name of the person (2–100 characters).
+   - <strong>Order</strong> — A unique positive integer for display position.
+   - <strong>Active</strong> — Toggle on to show it. Maximum 10 active testimonials allowed.
+4. Optionally fill in:
+   - <strong>Role</strong> — Job title or role. Optional, but must be at least 2 characters if provided.
+   - <strong>Organization</strong> — Company or organization name. Optional, but must be at least 2 characters if provided.
+5. Click <strong>"Publish"</strong>.</p>
+<h3 id="58-step-by-step-managing-team-members">5.8 Step-by-Step: Managing Team Members</h3>
+<p><strong>To add a new team member:</strong>
+1. Click <strong>"Team Members"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new team member.
+3. Fill in the required fields:
+   - <strong>Name</strong> — Full name (2–100 characters).
+   - <strong>Initials</strong> — 1–3 uppercase letters (e.g., "JS" for John Smith). Used as a fallback if the photo fails to load. The CMS enforces uppercase.
+   - <strong>Photo</strong> — Upload a professional headshot. Square images work best (400x400+).
+   - <strong>Bio</strong> — Short biography (10–500 characters).
+4. Optionally fill in:
+   - <strong>Social Links</strong> — Click "Add item" to add links. For each link, select a <strong>Platform</strong> from the dropdown (LinkedIn, Twitter, GitHub, Website) and enter the <strong>URL</strong>. Both fields are required per link entry.
+   - <strong>Order</strong> — A positive integer for display position. If provided, must be unique among all team members.
+   - <strong>Active</strong> — Defaults to on. Only active members appear on the website.
+5. Click <strong>"Publish"</strong>.</p>
+<h3 id="59-step-by-step-managing-events">5.9 Step-by-Step: Managing Events</h3>
+<p><strong>To add a new event:</strong>
+1. Click <strong>"Events"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new event.
+3. Fill in the <strong>Content</strong> tab:
+   - <strong>Title</strong> — Event name (3–150 characters).
+   - <strong>Slug</strong> — Click "Generate" to create a URL-friendly version of the title. Required.
+   - <strong>Start Date &amp; Time</strong> — When the event begins. Required. This field determines whether the event appears under "Upcoming" or "Past" on the website.
+   - <strong>End Date &amp; Time</strong> — Optional. If set, must be after the start date.
+   - <strong>Description</strong> — Event details (10–1000 characters).
+   - <strong>Date Display</strong> — Optional. How the date appears on event cards (e.g., "March 24" or "June 10–12"). Max 50 characters.
+   - <strong>Location</strong> — Select from the dropdown (Livingston NJ, Virtual Zoom, Virtual Google Meet, Hybrid) or type a custom location.
+4. Fill in the <strong>Media</strong> tab (optional):
+   - <strong>Image</strong> — Event banner or promotional image.
+5. Fill in the <strong>Links</strong> tab:
+   - <strong>Registration Link</strong> — URL where attendees can register. <strong>Required for upcoming events</strong> (events with a start date in the future). The CMS will block publishing if this is missing for a future event.
+   - <strong>Recap Link</strong> — Optional. Link to a recording or summary for past events.
+6. Click <strong>"Publish"</strong>.</p>
+<p><strong>How events appear on the website:</strong> Events with a start date in the future appear under the "Upcoming" tab (sorted by soonest first). Events with a start date in the past appear under the "Past" tab (sorted by most recent first).</p>
+<h3 id="510-step-by-step-managing-resources">5.10 Step-by-Step: Managing Resources</h3>
+<p><strong>To add a new resource:</strong>
+1. Click <strong>"Resources"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new resource.
+3. Fill in the required fields:
+   - <strong>Title</strong> — Resource name (3–150 characters).
+   - <strong>Icon (Emoji)</strong> — An emoji like "📚" or "🤖". You must provide either an emoji icon OR an icon image (or both). If neither is provided, the CMS will show an error.
+   - <strong>Icon Image</strong> — Upload a custom icon image. An alternative to the emoji icon.
+   - <strong>Description</strong> — What this resource is about (10–500 characters).
+   - <strong>Category</strong> — Select one from the radio buttons: "Getting Started," "Tools &amp; Platforms," or "Research &amp; Policy." Required.
+4. Optionally fill in:
+   - <strong>External Link</strong> — URL to an external resource.
+   - <strong>File Upload</strong> — Upload a downloadable file (PDF, doc, etc.).
+   - <strong>Tags</strong> — Select relevant tags from the predefined list (AI, Machine Learning, Education, Community, Ethics, Policy, Tools, Tutorial, Workshop, Beginner, Intermediate, Advanced).
+   - <strong>Order</strong> — Display position within the category. Must be a positive integer and unique within the same category.
+   - <strong>Active</strong> — Defaults to on. Only active resources appear on the website.
+5. Click <strong>"Publish"</strong>.</p>
+<h3 id="511-step-by-step-managing-blog-posts">5.11 Step-by-Step: Managing Blog Posts</h3>
+<p><strong>To create a new blog post:</strong>
+1. Click <strong>"Blog Posts"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new post.
+3. Fill in the <strong>Content</strong> tab:
+   - <strong>Title</strong> — The headline (5–200 characters).
+   - <strong>Slug</strong> — Click "Generate" to create a URL from the title. Required. This becomes the URL: <code>gaicom.org/blog/your-slug-here</code>.
+   - <strong>Excerpt</strong> — A short summary shown in blog listings (10–300 characters).
+   - <strong>Body</strong> — The full article. Required (at least one block of content). You can add:
+     - Paragraphs of text
+     - Headings (H2, H3, H4)
+     - Bold, italic, and inline code formatting
+     - Links (a valid URL is required for each link; supports http, https, mailto)
+     - Images (alt text is <strong>required</strong> for every inline image)
+     - Block quotes
+4. Fill in the <strong>Media</strong> tab:
+   - <strong>Main Image</strong> — The featured image for the post. Required.
+   - <strong>Image Alt Text</strong> — Description of the main image (5–200 characters). Required.
+5. Fill in the <strong>Metadata</strong> tab:
+   - <strong>Author</strong> — Select an existing author from the dropdown. Required.
+   - <strong>Published At</strong> — The publication date. Required. Set to today's date and time for new posts.
+   - <strong>Read Time</strong> — Required. Must follow the exact format: <code>X min read</code> (e.g., "5 min read" or "12 min read"). The CMS validates this format.
+   - <strong>Updated At</strong> — Optional. Set this when making significant updates to a published post. Must be after the Published At date.
+   - <strong>Categories</strong> — Optional. Select from the predefined list: AI Education, Community Impact, Technology, Events, Opinion, Research, Tutorial, News.
+   - <strong>Tags</strong> — Optional. Freeform text tags — type a tag and press Enter.
+6. Fill in the <strong>SEO</strong> tab (optional):
+   - <strong>SEO Title</strong> — Override for the page title tag. A warning appears if over 70 characters.
+   - <strong>SEO Description</strong> — Meta description for search engines. A warning appears if over 160 characters.
+7. Click <strong>"Publish"</strong>.</p>
+<div class="callout callout-important"><div class="callout-label">Important</div><p>Only published blog posts appear on the website. Drafts are automatically excluded.</p></div>
+<h3 id="512-step-by-step-managing-authors">5.12 Step-by-Step: Managing Authors</h3>
+<p><strong>To add a new author:</strong>
+1. Click <strong>"Authors"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new author.
+3. Fill in the required fields:
+   - <strong>Name</strong> — Full name (2–100 characters).
+   - <strong>Slug</strong> — Click "Generate." Required.
+4. Optionally fill in:
+   - <strong>Photo</strong> — Author headshot or avatar.
+   - <strong>Bio</strong> — Short biography (max 500 characters).
+5. Click <strong>"Publish"</strong>.</p>
+<p>Authors appear on blog posts that reference them. Create the author before creating the blog post.</p>
+<h3 id="513-step-by-step-managing-donation-tiers">5.13 Step-by-Step: Managing Donation Tiers</h3>
+<p><strong>To add a new donation tier:</strong>
+1. Click <strong>"Donation Tiers"</strong> in the sidebar.
+2. Click <strong>"+"</strong> to create a new tier.
+3. Fill in the required fields:
+   - <strong>Label</strong> — The tier name, e.g., "Supporter," "Advocate," "Champion" (2–50 characters).
+   - <strong>Amount ($)</strong> — A positive whole dollar amount (e.g., 25, 50, 100).
+   - <strong>Description</strong> — What the donation supports (10–500 characters).
+   - <strong>Order</strong> — Display position. Must be a unique positive integer.
+4. Optionally toggle:
+   - <strong>Featured (Most Popular)</strong> — Marks this tier with a "Most Popular" badge on the website. Only one tier can be featured at a time. If another tier is already featured, unmark it first.
+   - <strong>Active</strong> — Defaults to on. Maximum 6 active tiers allowed. Inactive tiers are hidden from the website.
+5. Click <strong>"Publish"</strong>.</p>
+<p>The list preview shows the order number, label, amount, and badges like "[FEATURED]" or "[INACTIVE]" for quick scanning.</p>
+<h3 id="514-step-by-step-editing-singleton-pages">5.14 Step-by-Step: Editing Singleton Pages</h3>
+<p>Singleton pages (Site Settings, Home Page, About Page, Donate Page) are single documents that you edit directly. You cannot create a second copy.</p>
+<p><strong>Site Settings:</strong>
+1. Click <strong>"Site Settings"</strong> in the sidebar. The document opens immediately.
+2. Editable fields:
+   - <strong>Site Name</strong> — Required (1–50 characters). Default: "GAICOM."
+   - <strong>Logo</strong> — Upload the site logo image.
+   - <strong>Contact Email</strong> — Required. Must be a valid email address.
+   - <strong>Location</strong> — Required (2–100 characters). Default: "Livingston, NJ."
+   - <strong>Social Links</strong> — Click "Add item" to add social media links. Select a <strong>Platform</strong> from the dropdown (Facebook, Twitter/X, Instagram, LinkedIn, YouTube, GitHub) and enter the <strong>URL</strong>. Both are required per entry.
+3. Click <strong>"Publish"</strong>.</p>
+<p><strong>Home Page:</strong>
+1. Click <strong>"Home Page"</strong> in the sidebar.
+2. The fields are organized into tabs: Hero, Mission, Vision, Examples, Testimonials, CTA, Newsletter.
+3. All section headings and subheadings are required. Key fields:
+   - <strong>Hero CTA Button Text</strong> — The text on the hero button (2–40 characters).
+   - <strong>Mission Audiences</strong> — Up to 6 cards. Each needs a title, description, and icon (dropdown: Community, Professional, Student, Business).
+   - <strong>Examples</strong> — Up to 8 "AI in Action" examples. Each needs an emoji icon, title, and description.
+4. Click <strong>"Publish"</strong>.</p>
+<p><strong>About Page:</strong>
+1. Click <strong>"About Page"</strong> in the sidebar.
+2. Fields are organized into tabs: Hero, Story, Values.
+3. Key fields:
+   - <strong>Story Paragraphs</strong> — At least one paragraph is required. Click "Add item" to add paragraphs.
+   - <strong>Values</strong> — Between 1 and 6 values. Each needs a title (2–50 characters) and description (10–300 characters). The icon field is optional.
+4. Click <strong>"Publish"</strong>.</p>
+<p><strong>Donate Page:</strong>
+1. Click <strong>"Donate Page"</strong> in the sidebar.
+2. Key fields:
+   - <strong>Impact Heading</strong> and <strong>Impact Description</strong> — Both required.
+   - <strong>Impact Stats</strong> — At least one bullet point required (e.g., "Train 500+ educators in AI tools").
+   - <strong>Testimonial Quote</strong> and <strong>Testimonial Author</strong> — Optional, but if you add one, you must add the other. The CMS enforces this.
+   - <strong>Custom Amount Minimum ($)</strong> — Required. Must be at least $1.
+   - <strong>Custom Amount Maximum ($)</strong> — Required. Must be greater than the minimum.
+3. Click <strong>"Publish"</strong>.</p>
+<h3 id="515-how-to-add-images">5.15 How to Add Images</h3>
+<ol>
+<li>Click on an image field (e.g., "Main Image" or "Photo").</li>
+<li>Click <strong>"Upload"</strong> and choose an image file from your computer.</li>
+<li>After uploading, use the <strong>hotspot tool</strong> (the circular focus selector) to set the focal point. This ensures the important part of the image stays visible when cropped at different screen sizes.</li>
+<li>Fill in the <strong>"Alt Text"</strong> field. This is required for hero slides (5–200 characters), blog main images (5–200 characters), and inline blog images.</li>
+</ol>
+<p><strong>Image sizing tips:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Content Type</th>
+<th>Recommended Size</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hero slides</td>
+<td>1920x800+ pixels (landscape)</td>
+<td>JPG</td>
+</tr>
+<tr>
+<td>Blog featured images</td>
+<td>800px+ wide</td>
+<td>JPG or PNG</td>
+</tr>
+<tr>
+<td>Team member photos</td>
+<td>400x400+ pixels (square)</td>
+<td>JPG</td>
+</tr>
+<tr>
+<td>Resource icon images</td>
+<td>64x64 to 128x128 pixels</td>
+<td>PNG</td>
+</tr>
+<tr>
+<td>General guidance</td>
+<td>Under 500KB file size</td>
+<td>JPG for photos, PNG for graphics</td>
+</tr>
+</tbody>
+</table>
+<h3 id="516-how-to-generate-slugs">5.16 How to Generate Slugs</h3>
+<p>Slugs are the URL-friendly text used in web addresses. For example, "AI in Healthcare" becomes <code>ai-in-healthcare</code>.</p>
+<ol>
+<li>First, type the <strong>Title</strong> in the title field.</li>
+<li>Click on the slug field.</li>
+<li>Click the <strong>"Generate"</strong> button.</li>
+<li>The slug will be created from the title automatically.</li>
+<li>You can manually edit it if needed, but avoid spaces and special characters.</li>
+</ol>
+<p><strong>Slugs are required for:</strong> Blog Posts, Events, and Authors.</p>
+<h3 id="517-common-mistakes-and-how-to-fix-them">5.17 Common Mistakes and How to Fix Them</h3>
+<table>
+<thead>
+<tr>
+<th>Mistake</th>
+<th>What Happens</th>
+<th>How to Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forgetting to click "Publish"</td>
+<td>Your edits remain as a draft and do not appear on the website.</td>
+<td>Click the "Publish" button in the bottom-right corner.</td>
+</tr>
+<tr>
+<td>Forgetting to generate a slug</td>
+<td>Blog posts and events will not have a working URL. The CMS will block publishing.</td>
+<td>Click the slug field and click "Generate."</td>
+</tr>
+<tr>
+<td>Setting the same order number as another item</td>
+<td>The CMS displays an error like "Another hero slide already uses order 2."</td>
+<td>Change the order number to one that is not in use.</td>
+</tr>
+<tr>
+<td>Trying to activate more items than the limit allows</td>
+<td>The CMS displays an error like "Maximum 4 active hero slides allowed."</td>
+<td>Deactivate another item first, then activate the new one.</td>
+</tr>
+<tr>
+<td>Entering Read Time in the wrong format</td>
+<td>The CMS shows a validation error.</td>
+<td>Use the exact format: <code>5 min read</code> (a number, then "min read").</td>
+</tr>
+<tr>
+<td>Adding a testimonial quote without an author (or vice versa)</td>
+<td>The CMS shows a cross-validation error on the Donate Page.</td>
+<td>Fill in both the quote and author fields, or leave both empty.</td>
+</tr>
+<tr>
+<td>Setting custom amount max lower than min</td>
+<td>The CMS shows: "Maximum must be greater than minimum."</td>
+<td>Increase the max or decrease the min.</td>
+</tr>
+<tr>
+<td>Uploading very large images</td>
+<td>The website loads slowly.</td>
+<td>Resize images to recommended dimensions and keep file size under 500KB.</td>
+</tr>
+<tr>
+<td>Leaving required fields empty</td>
+<td>Red error highlights appear and publishing is blocked.</td>
+<td>Fill in all fields marked with a red asterisk (*).</td>
+</tr>
+<tr>
+<td>Missing registration link on an upcoming event</td>
+<td>The CMS shows: "Registration link is required for upcoming events."</td>
+<td>Add a registration URL in the Links tab, or move the start date to the past if the event is over.</td>
+</tr>
+<tr>
+<td>Missing icon on a resource</td>
+<td>The CMS shows: "Either an emoji icon or an icon image is required."</td>
+<td>Add an emoji in the Icon field or upload an image in the Icon Image field.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="518-troubleshooting">5.18 Troubleshooting</h3>
+<p><strong>Problem: I published but the website still shows old content.</strong>
+- Wait 30–60 seconds and hard-refresh the page (Ctrl+Shift+R or Cmd+Shift+R).
+- Try opening the page in an incognito/private window to bypass browser cache.
+- CDN caching can cause delays of up to one minute. This is normal.</p>
+<p><strong>Problem: I can't find the Publish button.</strong>
+- Scroll to the bottom of the editor. The Publish button is in the bottom-right corner.
+- If you see red validation errors on any field, those must be fixed first. The Publish button may be grayed out.</p>
+<p><strong>Problem: The blog post URL doesn't work.</strong>
+- Check that you generated a slug for the post.
+- Make sure the post is published (not still in draft).
+- Confirm that the <code>Published At</code> date is set. Only published posts with a publication date appear on the website.</p>
+<p><strong>Problem: An item isn't showing on the website even though it's published.</strong>
+- Check the <strong>"Active"</strong> toggle. If it is off, the item will not appear on the website.
+- For hero slides, testimonials, team members, resources, and donation tiers, only items with Active set to true are displayed.
+- For events, the item appears under "Upcoming" or "Past" based on the start date. Verify the start date is correct.</p>
+<p><strong>Problem: I see a validation error I don't understand.</strong>
+- Read the red error message carefully — it tells you exactly what is wrong.
+- Cross-field errors (like "Testimonial author is required when a quote is provided") mean a related field also needs attention.
+- Async validation errors (like "Another testimonial already uses order 3") mean another document in the CMS has a conflicting value. Find that document and change it first.</p>
+<p><strong>Problem: I accidentally deleted a singleton page (Site Settings, Home Page, etc.).</strong>
+- Contact your developer. The website will fall back to default hardcoded text, so nothing will break visually. The developer can recreate the singleton document.</p>
+<h3 id="519-do-not-delete">5.19 Do NOT Delete</h3>
+<p>The following items must never be deleted from the CMS:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site Settings</strong> document</td>
+<td>Contains the site name, logo, email, and social links used on every page. Deleting it causes the entire site to fall back to hardcoded defaults.</td>
+</tr>
+<tr>
+<td><strong>Home Page</strong> document</td>
+<td>Controls all text on the landing page (hero, mission, vision, examples, CTA, newsletter).</td>
+</tr>
+<tr>
+<td><strong>About Page</strong> document</td>
+<td>Controls the About page hero, story, and values sections.</td>
+</tr>
+<tr>
+<td><strong>Donate Page</strong> document</td>
+<td>Controls the donation page impact section, testimonial, and custom amount limits.</td>
+</tr>
+<tr>
+<td><strong>Authors linked to blog posts</strong></td>
+<td>Deleting an author will cause their blog posts to show no author name. Remove the author reference from blog posts before deleting the author.</td>
+</tr>
+<tr>
+<td><strong>The last remaining hero slide</strong></td>
+<td>If all hero slides are deleted or deactivated, the website falls back to built-in placeholder images. This is safe but not ideal.</td>
+</tr>
+<tr>
+<td><strong>All donation tiers</strong></td>
+<td>If all tiers are deleted or deactivated, the website falls back to built-in default tiers ($25, $50, $100, $500).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="520-content-quality-tips">5.20 Content Quality Tips</h3>
+<ul>
+<li><strong>Alt text should be descriptive, not decorative.</strong> Write "Community members discussing AI project at workshop table" instead of "image1" or "photo." This helps visually impaired users and improves SEO.</li>
+<li><strong>Excerpts should be complete sentences.</strong> They appear on listing pages and are the first impression for readers.</li>
+<li><strong>Keep blog post titles under 70 characters</strong> for good display on search engines and social media sharing.</li>
+<li><strong>Use sentence case for headings</strong> (capitalize only the first word and proper nouns) to match the site style.</li>
+<li><strong>Check the preview panel.</strong> In the document list, each item shows a preview with its title, order number, and status badges like "[INACTIVE]" or "[FEATURED]" so you can scan content quickly.</li>
+<li><strong>Set a Read Time for every blog post.</strong> It is required and must follow the format "5 min read." Estimate based on ~200 words per minute.</li>
+</ul>
+<h3 id="521-when-to-ask-a-developer">5.21 When to Ask a Developer</h3>
+<p>Contact your developer in these situations:</p>
+<ul>
+<li>You need to add a field that does not currently exist in the CMS (e.g., a phone number field on Site Settings).</li>
+<li>You need to change the predefined dropdown options (e.g., adding a new resource category or blog category).</li>
+<li>You need to change validation rules (e.g., increasing the maximum number of active hero slides beyond 4).</li>
+<li>You accidentally deleted a singleton document (Site Settings, Home Page, About Page, or Donate Page).</li>
+<li>A published change is not appearing on the website after several minutes and clearing cache does not help.</li>
+<li>You see an error message you cannot resolve by following the troubleshooting steps above.</li>
+<li>You need to change the Stripe payment integration or newsletter signup behavior.</li>
+<li>You need to update the Lambda API URL, Stripe keys, or any backend configuration.</li>
+</ul>
+<h3 id="522-cms-guardrails-reference">5.22 CMS Guardrails Reference</h3>
+<p>The table below lists the key enforced guardrails in the CMS — the domain-specific rules that go beyond basic "required field" or "character limit" constraints. Basic field requirements (min/max character counts, required fields) are documented in each content type's step-by-step guide above. "Enforced" means the CMS will prevent publishing if the rule is violated.</p>
+<table>
+<thead>
+<tr>
+<th>Content Type</th>
+<th>Guardrail</th>
+<th>Error Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hero Slide</td>
+<td>Max 4 active slides</td>
+<td>"Maximum 4 active hero slides allowed. Deactivate another slide first"</td>
+</tr>
+<tr>
+<td>Hero Slide</td>
+<td>Order 1–4, unique, required</td>
+<td>"Another hero slide already uses order X" / "Order cannot exceed 4 (maximum 4 slides)"</td>
+</tr>
+<tr>
+<td>Hero Slide</td>
+<td>Alt text required, 5–200 chars</td>
+<td>"Alt text is required for accessibility (5-200 characters)"</td>
+</tr>
+<tr>
+<td>Hero Slide</td>
+<td>Image required</td>
+<td>"Every hero slide must have an image"</td>
+</tr>
+<tr>
+<td>Testimonial</td>
+<td>Max 10 active</td>
+<td>"Maximum 10 active testimonials allowed. Deactivate another first"</td>
+</tr>
+<tr>
+<td>Testimonial</td>
+<td>Order unique, required</td>
+<td>"Another testimonial already uses order X"</td>
+</tr>
+<tr>
+<td>Testimonial</td>
+<td>Quote 10–500 chars, required</td>
+<td>Standard min/max validation</td>
+</tr>
+<tr>
+<td>Team Member</td>
+<td>Initials required, 1–3 chars, uppercase</td>
+<td>"Initials must be uppercase"</td>
+</tr>
+<tr>
+<td>Team Member</td>
+<td>Photo required</td>
+<td>"A photo is required for every team member"</td>
+</tr>
+<tr>
+<td>Team Member</td>
+<td>Order unique if provided</td>
+<td>"Another team member already uses order X"</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>Slug required</td>
+<td>Standard required validation</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>Start date required</td>
+<td>"Start date and time is required"</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>End date must be after start</td>
+<td>"End date/time must be after start date/time"</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>Registration link required for upcoming events</td>
+<td>"Registration link is required for upcoming events"</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>Either emoji icon or icon image required</td>
+<td>"Either an emoji icon or an icon image is required"</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>Category required</td>
+<td>"Category is required"</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>Order unique within category</td>
+<td>"Another resource in 'Category' already uses order X"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Body required (min 1 block)</td>
+<td>"Blog post body cannot be empty"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Main image required</td>
+<td>"A main image is required"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Image alt text required, 5–200 chars</td>
+<td>"Alt text is required for the main image (5-200 characters)"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Author required</td>
+<td>"An author is required"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Read Time required, format "X min read"</td>
+<td>"Read time is required (format: '5 min read')"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Slug required</td>
+<td>"Slug is required. Click 'Generate' to create one from the title"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Updated At must be after Published At</td>
+<td>"Updated date cannot be before the published date"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Inline image alt text required</td>
+<td>"Alt text is required for all inline images"</td>
+</tr>
+<tr>
+<td>Blog Post</td>
+<td>Link URLs must be valid (http, https, mailto)</td>
+<td>"A valid URL is required for links"</td>
+</tr>
+<tr>
+<td>Author</td>
+<td>Slug required</td>
+<td>"Slug is required. Click 'Generate' to create one"</td>
+</tr>
+<tr>
+<td>Donation Tier</td>
+<td>Max 6 active tiers</td>
+<td>"Maximum 6 active donation tiers allowed. Deactivate another tier first"</td>
+</tr>
+<tr>
+<td>Donation Tier</td>
+<td>Only 1 featured tier</td>
+<td>"Only one donation tier can be featured. Unmark the other tier first"</td>
+</tr>
+<tr>
+<td>Donation Tier</td>
+<td>Order unique, required</td>
+<td>"Another donation tier already uses order X"</td>
+</tr>
+<tr>
+<td>Donation Tier</td>
+<td>Amount required, positive integer</td>
+<td>"Amount must be a positive whole dollar amount"</td>
+</tr>
+<tr>
+<td>Donate Page</td>
+<td>Impact stats min 1 entry</td>
+<td>"At least one impact stat is required"</td>
+</tr>
+<tr>
+<td>Donate Page</td>
+<td>Quote and author: both or neither</td>
+<td>"Testimonial author is required when a quote is provided"</td>
+</tr>
+<tr>
+<td>Donate Page</td>
+<td>Max must be greater than min</td>
+<td>"Maximum ($X) must be greater than minimum ($Y)"</td>
+</tr>
+<tr>
+<td>About Page</td>
+<td>Story paragraphs min 1</td>
+<td>"At least one story paragraph is required"</td>
+</tr>
+<tr>
+<td>About Page</td>
+<td>Values: 1–6 items required</td>
+<td>"Between 1 and 6 values are required"</td>
+</tr>
+<tr>
+<td>Site Settings</td>
+<td>Contact email must be valid</td>
+<td>"A valid contact email is required"</td>
+</tr>
+<tr>
+<td>Home Page</td>
+<td>Mission audiences max 6</td>
+<td>Standard max validation</td>
+</tr>
+<tr>
+<td>Home Page</td>
+<td>Examples max 8</td>
+<td>Standard max validation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<div class="section-break"></div><h2 id="6-cms-technical-schema-documentation"><span class="section-number">6.</span> CMS Technical Schema Documentation</h2>
+<hr class="section-rule">
+<h3 id="schema-overview">Schema Overview</h3>
+<p>The Sanity Studio is located at <code>sanity-studio/</code> and defines 12 schema types across 12 files in <code>sanity-studio/schemaTypes/</code>. Schemas are registered in <code>schemaTypes/index.ts</code>.</p>
+<p><strong>Singleton types</strong> (one document per type, enforced by <code>sanity.config.ts</code>):
+- <code>siteSettings</code>
+- <code>homePage</code>
+- <code>aboutPage</code>
+- <code>donatePage</code></p>
+<p><strong>Collection types</strong> (multiple documents):
+- <code>heroSlide</code>
+- <code>testimonial</code>
+- <code>teamMember</code>
+- <code>event</code>
+- <code>resource</code>
+- <code>blogPost</code>
+- <code>author</code>
+- <code>donationTier</code></p>
+<p>Singleton enforcement is implemented in <code>sanity.config.ts</code>:
+- Singletons are filtered from the "new document" menu via <code>schema.templates</code>.
+- Singleton document actions are limited to <code>publish</code>, <code>discardChanges</code>, and <code>restore</code>.
+- Each singleton is rendered as a direct document link in the structure sidebar, not as a list.</p>
+<hr />
+<h3 id="schema-sitesettings">Schema: siteSettings</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/siteSettings.js</code>
+<strong>Type:</strong> Singleton</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>siteName</code></td>
+<td>string</td>
+<td>No</td>
+<td>—</td>
+<td><code>"GAICOM"</code></td>
+</tr>
+<tr>
+<td><code>logo</code></td>
+<td>image (hotspot)</td>
+<td>No</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>contactEmail</code></td>
+<td>string</td>
+<td>No</td>
+<td><code>.email()</code></td>
+<td><code>"gaicomnj@gmail.com"</code></td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>string</td>
+<td>No</td>
+<td>—</td>
+<td><code>"Livingston, NJ"</code></td>
+</tr>
+<tr>
+<td><code>socialLinks</code></td>
+<td>array of objects</td>
+<td>No</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>socialLinks item fields:</strong> <code>platform</code> (string), <code>url</code> (url), <code>icon</code> (string)</p>
+<hr />
+<h3 id="schema-homepage">Schema: homePage</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/homePage.js</code>
+<strong>Type:</strong> Singleton
+<strong>Groups:</strong> hero, mission, vision, examples, testimonials, cta, newsletter</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Group</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>heroTitle</code></td>
+<td>string</td>
+<td>hero</td>
+<td><code>"Empowering Communities Through AI"</code></td>
+</tr>
+<tr>
+<td><code>heroSubtitle</code></td>
+<td>text</td>
+<td>hero</td>
+<td>Long description about GAICOM's mission</td>
+</tr>
+<tr>
+<td><code>heroCtaText</code></td>
+<td>string</td>
+<td>hero</td>
+<td><code>"Sign Up for Newsletter"</code></td>
+</tr>
+<tr>
+<td><code>missionHeading</code></td>
+<td>string</td>
+<td>mission</td>
+<td><code>"AI for Every Community"</code></td>
+</tr>
+<tr>
+<td><code>missionSubheading</code></td>
+<td>text</td>
+<td>mission</td>
+<td>Long description</td>
+</tr>
+<tr>
+<td><code>missionAudiences</code></td>
+<td>array of objects</td>
+<td>mission</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>visionHeading</code></td>
+<td>string</td>
+<td>vision</td>
+<td><code>"A Future Where AI Lifts Everyone"</code></td>
+</tr>
+<tr>
+<td><code>examplesHeading</code></td>
+<td>string</td>
+<td>examples</td>
+<td><code>"AI in Action"</code></td>
+</tr>
+<tr>
+<td><code>examplesSubheading</code></td>
+<td>text</td>
+<td>examples</td>
+<td>Long description</td>
+</tr>
+<tr>
+<td><code>examples</code></td>
+<td>array of objects</td>
+<td>examples</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>testimonialsHeading</code></td>
+<td>string</td>
+<td>testimonials</td>
+<td><code>"What Our Community Says"</code></td>
+</tr>
+<tr>
+<td><code>testimonialsSubheading</code></td>
+<td>text</td>
+<td>testimonials</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>ctaHeading</code></td>
+<td>string</td>
+<td>cta</td>
+<td><code>"Ready to Shape the Future with AI?"</code></td>
+</tr>
+<tr>
+<td><code>ctaSubheading</code></td>
+<td>text</td>
+<td>cta</td>
+<td>Long description</td>
+</tr>
+<tr>
+<td><code>newsletterHeading</code></td>
+<td>string</td>
+<td>newsletter</td>
+<td><code>"Stay in the Loop"</code></td>
+</tr>
+<tr>
+<td><code>newsletterSubheading</code></td>
+<td>text</td>
+<td>newsletter</td>
+<td>Long description</td>
+</tr>
+</tbody>
+</table>
+<p><strong>missionAudiences item fields:</strong> <code>title</code> (string), <code>description</code> (text), <code>icon</code> (string — one of: community, professional, student, business), <code>order</code> (number)</p>
+<p><strong>examples item fields:</strong> <code>icon</code> (string — emoji), <code>title</code> (string), <code>description</code> (text), <code>order</code> (number)</p>
+<hr />
+<h3 id="schema-aboutpage">Schema: aboutPage</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/aboutPage.js</code>
+<strong>Type:</strong> Singleton
+<strong>Groups:</strong> hero, story, values</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Group</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>heroHeading</code></td>
+<td>string</td>
+<td>hero</td>
+<td><code>"Our Story"</code></td>
+</tr>
+<tr>
+<td><code>heroSubheading</code></td>
+<td>text</td>
+<td>hero</td>
+<td>Description about GAICOM's founding</td>
+</tr>
+<tr>
+<td><code>storyHeading</code></td>
+<td>string</td>
+<td>story</td>
+<td><code>"Why We Exist"</code></td>
+</tr>
+<tr>
+<td><code>storyParagraphs</code></td>
+<td>array of text</td>
+<td>story</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>valuesHeading</code></td>
+<td>string</td>
+<td>values</td>
+<td><code>"Our Values"</code></td>
+</tr>
+<tr>
+<td><code>valuesSubheading</code></td>
+<td>text</td>
+<td>values</td>
+<td><code>"The principles that guide everything we do at GAICOM."</code></td>
+</tr>
+<tr>
+<td><code>values</code></td>
+<td>array of objects</td>
+<td>values</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p><strong>values item fields:</strong> <code>title</code> (string), <code>icon</code> (string), <code>description</code> (text)</p>
+<hr />
+<h3 id="schema-donatepage">Schema: donatePage</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/donatePage.js</code>
+<strong>Type:</strong> Singleton</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>impactHeading</code></td>
+<td>string</td>
+<td>No</td>
+<td><code>"Your Impact Matters"</code></td>
+</tr>
+<tr>
+<td><code>impactDescription</code></td>
+<td>text</td>
+<td>No</td>
+<td>Long description</td>
+</tr>
+<tr>
+<td><code>impactStats</code></td>
+<td>array of strings</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>testimonialQuote</code></td>
+<td>text</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>testimonialAuthor</code></td>
+<td>string</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>customAmountMin</code></td>
+<td>number</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>customAmountMax</code></td>
+<td>number</td>
+<td>No</td>
+<td><code>5000</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="schema-heroslide">Schema: heroSlide</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/heroSlide.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>image (hotspot)</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>alt</code></td>
+<td>string</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ordering:</strong> Order ascending</p>
+<hr />
+<h3 id="schema-testimonial">Schema: testimonial</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/testimonial.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quote</code></td>
+<td>text</td>
+<td>Yes</td>
+<td><code>.required().min(10).max(500)</code></td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td>string</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>string</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>organization</code></td>
+<td>string</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ordering:</strong> Order ascending</p>
+<hr />
+<h3 id="schema-teammember">Schema: teamMember</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/teamMember.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>initials</code></td>
+<td>string</td>
+<td>No</td>
+<td><code>.max(3)</code></td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>image (hotspot)</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>bio</code></td>
+<td>text</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>socialLinks</code></td>
+<td>array of objects</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>socialLinks item fields:</strong> <code>platform</code> (string — list: linkedin, twitter, github, website), <code>url</code> (url)</p>
+<hr />
+<h3 id="schema-event">Schema: event</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/event.js</code>
+<strong>Type:</strong> Collection
+<strong>Groups:</strong> content, media, links</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Group</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>content</td>
+<td>Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>slug (source: title)</td>
+<td>content</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>dateDisplay</code></td>
+<td>string</td>
+<td>content</td>
+<td>No</td>
+<td>Manual format e.g., "March 24"</td>
+</tr>
+<tr>
+<td><code>startDateTime</code></td>
+<td>datetime</td>
+<td>content</td>
+<td>Yes</td>
+<td>Used for upcoming/past filtering</td>
+</tr>
+<tr>
+<td><code>endDateTime</code></td>
+<td>datetime</td>
+<td>content</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text</td>
+<td>content</td>
+<td>Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>string</td>
+<td>content</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>image (hotspot)</td>
+<td>media</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>registrationLink</code></td>
+<td>url</td>
+<td>links</td>
+<td>No</td>
+<td>For upcoming events</td>
+</tr>
+<tr>
+<td><code>recapLink</code></td>
+<td>url</td>
+<td>links</td>
+<td>No</td>
+<td>For past events</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orderings:</strong> Date ascending, Date descending</p>
+<hr />
+<h3 id="schema-resource">Schema: resource</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/resource.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>icon</code></td>
+<td>string</td>
+<td>No</td>
+<td>Emoji</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text</td>
+<td>Yes</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>No</td>
+<td>List: "Getting Started", "Tools &amp; Platforms", "Research &amp; Policy"</td>
+</tr>
+<tr>
+<td><code>link</code></td>
+<td>url</td>
+<td>No</td>
+<td>External link</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>file</td>
+<td>No</td>
+<td>File upload</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array of strings</td>
+<td>No</td>
+<td>Tags layout</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ordering:</strong> Category ascending, then order ascending</p>
+<hr />
+<h3 id="schema-blogpost">Schema: blogPost</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/blogPost.js</code>
+<strong>Type:</strong> Collection
+<strong>Groups:</strong> content, media, metadata, seo</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Group</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>content</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>slug (source: title)</td>
+<td>content</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>text</td>
+<td>content</td>
+<td>Yes</td>
+<td><code>.required().max(300)</code></td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>Portable Text array</td>
+<td>content</td>
+<td>No</td>
+<td>Blocks + images</td>
+</tr>
+<tr>
+<td><code>mainImage</code></td>
+<td>image (hotspot)</td>
+<td>media</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>imageAlt</code></td>
+<td>string</td>
+<td>media</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td>reference → author</td>
+<td>metadata</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>publishedAt</code></td>
+<td>datetime</td>
+<td>metadata</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>updatedAt</code></td>
+<td>datetime</td>
+<td>metadata</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>readTime</code></td>
+<td>string</td>
+<td>metadata</td>
+<td>No</td>
+<td>e.g., "5 min read"</td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>array of strings</td>
+<td>metadata</td>
+<td>No</td>
+<td>Tags layout</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array of strings</td>
+<td>metadata</td>
+<td>No</td>
+<td>Tags layout</td>
+</tr>
+<tr>
+<td><code>seoTitle</code></td>
+<td>string</td>
+<td>seo</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>seoDescription</code></td>
+<td>text</td>
+<td>seo</td>
+<td>No</td>
+<td><code>.max(160)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Portable Text body supports:</strong>
+- Block styles: normal, h2, h3, h4, blockquote
+- Marks: strong, em, code
+- Annotations: link (with <code>href</code> URL validation and <code>blank</code> boolean for new tab)
+- Image blocks with <code>alt</code> and <code>caption</code> fields</p>
+<p><strong>Ordering:</strong> Published date descending</p>
+<hr />
+<h3 id="schema-author">Schema: author</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/author.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>slug (source: name)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>image (hotspot)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>bio</code></td>
+<td>text</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="schema-donationtier">Schema: donationTier</h3>
+<p><strong>File:</strong> <code>sanity-studio/schemaTypes/donationTier.js</code>
+<strong>Type:</strong> Collection</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label</code></td>
+<td>string</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>number</td>
+<td>No</td>
+<td><code>.positive().integer()</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>text</td>
+<td>Yes</td>
+<td><code>.required()</code></td>
+</tr>
+<tr>
+<td><code>featured</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>false</code></td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>number</td>
+<td>No</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>isActive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Default: <code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ordering:</strong> Order ascending</p>
+<hr />
+<h3 id="relationships-between-schemas">Relationships Between Schemas</h3>
+<p>The only reference relationship in the schema:</p>
+<pre><code>blogPost.author → reference → author
+</code></pre>
+<p>Blog posts reference an author document. When queried, the GROQ query dereferences the author to extract <code>name</code>, <code>image</code>, and <code>bio</code>:</p>
+<pre><span class="code-lang">GROQ</span><code class="language-groq">&quot;authorName&quot;: author-&gt;name,
+&quot;authorImage&quot;: author-&gt;image.asset-&gt;url,
+&quot;authorBio&quot;: author-&gt;bio,
+</code></pre>
+<p>All other schemas are standalone — there are no additional cross-references.</p>
+<hr />
+<div class="section-break"></div><h2 id="7-deployment-guide"><span class="section-number">7.</span> Deployment Guide</h2>
+<hr class="section-rule">
+<h3 id="local-development">Local Development</h3>
+<p><strong>Prerequisites:</strong>
+- Node.js 20.x or later
+- npm</p>
+<p><strong>Frontend local run:</strong></p>
+<ol>
+<li>Clone the repository.</li>
+<li>Copy <code>.env.example</code> to <code>.env.local</code> and fill in the values:
+   <code>VITE_SANITY_PROJECT_ID=02ubmxqm
+   VITE_SANITY_DATASET=production
+   VITE_SANITY_API_VERSION=2025-01-01
+   VITE_DONATE_API_BASE=https://pnmqkzwaxf3qzrjthiyrg5idqq0lhpje.lambda-url.us-east-1.on.aws</code></li>
+<li>Install dependencies:
+   <code>bash
+   npm install</code></li>
+<li>Start the dev server:
+   <code>bash
+   npm run dev</code></li>
+<li>Open <code>http://localhost:5173</code> in your browser.</li>
+</ol>
+<p><strong>Sanity Studio local run:</strong></p>
+<ol>
+<li>Navigate to the Sanity Studio directory:
+   <code>bash
+   cd sanity-studio</code></li>
+<li>Install dependencies:
+   <code>bash
+   npm install</code></li>
+<li>Start the studio:
+   <code>bash
+   npx sanity dev</code></li>
+<li>The studio will be available at <code>http://localhost:3333</code>.</li>
+</ol>
+<p><strong>Lambda local testing:</strong></p>
+<p>The Lambda function does not have a built-in local development server. Options for testing:</p>
+<ol>
+<li>
+<p><strong>Direct invocation via AWS CLI:</strong>
+   <code>bash
+   aws lambda invoke --function-name gaicom-lambda \
+     --payload '{"rawPath":"/newsletter","requestContext":{"http":{"method":"POST"}},"body":"{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\"}","isBase64Encoded":false}' \
+     response.json</code></p>
+</li>
+<li>
+<p><strong>Test via the deployed Function URL with curl:</strong>
+   <code>bash
+   curl -X POST https://pnmqkzwaxf3qzrjthiyrg5idqq0lhpje.lambda-url.us-east-1.on.aws/newsletter \
+     -H "Content-Type: application/json" \
+     -d '{"firstName":"Test","lastName":"User","email":"test@example.com"}'</code></p>
+</li>
+<li>
+<p><strong>AWS Console test events:</strong> Go to the Lambda function in AWS Console, create a test event with the appropriate JSON structure, and invoke.</p>
+</li>
+</ol>
+<hr />
+<h3 id="production-deployment">Production Deployment</h3>
+<h4 id="step-1-build-the-frontend">Step 1: Build the Frontend</h4>
+<pre><span class="code-lang">Bash</span><code class="language-bash">npm run build
+</code></pre>
+<p>This generates the <code>dist/</code> directory with all static assets.</p>
+<h4 id="step-2-upload-dist-to-s3">Step 2: Upload /dist to S3</h4>
+<p>Upload the contents of <code>dist/</code> (not the <code>dist</code> folder itself) to the S3 bucket:</p>
+<pre><span class="code-lang">Bash</span><code class="language-bash">aws s3 sync dist/ s3://gaicom-test-v1 --delete
+</code></pre>
+<p>The <code>--delete</code> flag removes old files that are no longer in the build output.</p>
+<h4 id="step-3-verify-s3-bucket-configuration">Step 3: Verify S3 Bucket Configuration</h4>
+<p>Ensure the bucket has:</p>
+<ul>
+<li><strong>Static website hosting</strong> enabled</li>
+<li><strong>Index document:</strong> <code>index.html</code></li>
+<li><strong>Error document:</strong> <code>index.html</code> (critical for SPA routing)</li>
+</ul>
+<h4 id="step-4-verify-bucket-policy">Step 4: Verify Bucket Policy</h4>
+<p>The bucket policy must allow public read:</p>
+<pre><span class="code-lang">JSON</span><code class="language-json">{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [{
+    &quot;Sid&quot;: &quot;PublicReadGetObject&quot;,
+    &quot;Effect&quot;: &quot;Allow&quot;,
+    &quot;Principal&quot;: &quot;*&quot;,
+    &quot;Action&quot;: &quot;s3:GetObject&quot;,
+    &quot;Resource&quot;: &quot;arn:aws:s3:::gaicom-test-v1/*&quot;
+  }]
+}
+</code></pre>
+<h4 id="step-5-deploy-sanity-studio">Step 5: Deploy Sanity Studio</h4>
+<p>From the <code>sanity-studio/</code> directory:</p>
+<pre><span class="code-lang">Bash</span><code class="language-bash">npx sanity deploy
+</code></pre>
+<p>This will prompt for a hostname and deploy the studio to <code>https://&lt;hostname&gt;.sanity.studio</code>.</p>
+<h4 id="step-6-deploy-lambda">Step 6: Deploy Lambda</h4>
+<ol>
+<li>Package the Lambda function with its dependencies (<code>stripe</code>, <code>googleapis</code>).</li>
+<li>Upload via AWS Console or CLI:
+   <code>bash
+   zip -r function.zip index.mjs node_modules/
+   aws lambda update-function-code --function-name gaicom-lambda --zip-file fileb://function.zip</code></li>
+<li>Ensure the Lambda has a <strong>Function URL</strong> configured with <code>AuthType: NONE</code> (public access).</li>
+</ol>
+<h4 id="step-7-configure-lambda-environment-variables">Step 7: Configure Lambda Environment Variables</h4>
+<p>In the Lambda configuration, set:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>STRIPE_SECRET_KEY</code></td>
+<td><code>sk_test_...</code> or <code>sk_live_...</code></td>
+</tr>
+<tr>
+<td><code>STRIPE_WEBHOOK_SECRET</code></td>
+<td><code>whsec_...</code></td>
+</tr>
+<tr>
+<td><code>SUCCESS_URL</code></td>
+<td><code>http://gaicom-test-v1.s3-website-us-east-1.amazonaws.com/donate/success</code></td>
+</tr>
+<tr>
+<td><code>CANCEL_URL</code></td>
+<td><code>http://gaicom-test-v1.s3-website-us-east-1.amazonaws.com/donate/cancel</code></td>
+</tr>
+<tr>
+<td><code>GOOGLE_SERVICE_ACCOUNT_JSON</code></td>
+<td>Full JSON credential string</td>
+</tr>
+<tr>
+<td><code>SPREADSHEET_ID</code></td>
+<td>Google Sheet ID</td>
+</tr>
+</tbody>
+</table>
+<h4 id="step-8-configure-stripe-webhook">Step 8: Configure Stripe Webhook</h4>
+<ol>
+<li>In the Stripe Dashboard, go to Developers &gt; Webhooks.</li>
+<li>Add an endpoint: <code>{LAMBDA_FUNCTION_URL}/webhook</code></li>
+<li>Select events: <code>checkout.session.completed</code></li>
+<li>Copy the webhook signing secret to the Lambda <code>STRIPE_WEBHOOK_SECRET</code> environment variable.</li>
+</ol>
+<h4 id="step-9-test-the-full-flow">Step 9: Test the Full Flow</h4>
+<ol>
+<li>Visit the S3 website URL.</li>
+<li>Navigate to <code>/donate</code> and attempt a test donation (use Stripe test card <code>4242 4242 4242 4242</code>).</li>
+<li>Verify redirect to <code>/donate/success</code> with a session ID.</li>
+<li>Check CloudWatch logs for the webhook event.</li>
+<li>Submit a newsletter signup and verify the Google Sheet receives the entry.</li>
+<li>Navigate to <code>/blog</code> and verify CMS content loads.</li>
+</ol>
+<hr />
+<h3 id="known-deployment-issues">Known Deployment Issues</h3>
+<p><strong>SPA routing on S3:</strong> Without setting the error document to <code>index.html</code>, navigating directly to <code>/about</code> or <code>/blog/some-slug</code> returns a 404 from S3. Setting the error document to <code>index.html</code> causes S3 to serve the React app for all paths, allowing client-side routing to work.</p>
+<p><strong>CORS origin mismatch:</strong> If you deploy to a new S3 bucket or use CloudFront, the Lambda CORS whitelist must be updated to include the new origin. Without this, browser requests to Lambda will fail with CORS errors.</p>
+<p><strong>Build-time environment variables:</strong> <code>VITE_DONATE_API_BASE</code> is embedded into the JavaScript bundle at build time. If the Lambda Function URL changes, you must rebuild and redeploy the frontend.</p>
+<hr />
+<div class="section-break"></div><h2 id="8-environment-variables-security"><span class="section-number">8.</span> Environment Variables &amp; Security</h2>
+<hr class="section-rule">
+<h3 id="all-required-environment-variables">All Required Environment Variables</h3>
+<h4 id="frontend-envlocal-embedded-in-build">Frontend (.env.local) — Embedded in Build</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Example</th>
+<th>Secret?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VITE_SANITY_PROJECT_ID</code></td>
+<td>Sanity project identifier</td>
+<td><code>02ubmxqm</code></td>
+<td>No — public API</td>
+</tr>
+<tr>
+<td><code>VITE_SANITY_DATASET</code></td>
+<td>Sanity dataset name</td>
+<td><code>production</code></td>
+<td>No — public API</td>
+</tr>
+<tr>
+<td><code>VITE_SANITY_API_VERSION</code></td>
+<td>Sanity API version</td>
+<td><code>2025-01-01</code></td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>VITE_DONATE_API_BASE</code></td>
+<td>Lambda Function URL base</td>
+<td><code>https://pnmq...on.aws</code></td>
+<td>No — public endpoint</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All frontend variables are safe to expose.</strong> They are embedded in the JavaScript bundle and visible to anyone who inspects the page source. The Sanity project ID and dataset are needed for client-side content fetching and are not sensitive — Sanity's content API is read-only by default.</p>
+<h4 id="lambda-environment-variables-server-side-only">Lambda Environment Variables — Server-Side Only</h4>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+<th>Secret?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>STRIPE_SECRET_KEY</code></td>
+<td>Stripe API key for creating checkout sessions</td>
+<td><strong>YES — CRITICAL</strong></td>
+</tr>
+<tr>
+<td><code>STRIPE_WEBHOOK_SECRET</code></td>
+<td>Webhook signature verification secret</td>
+<td><strong>YES — CRITICAL</strong></td>
+</tr>
+<tr>
+<td><code>SUCCESS_URL</code></td>
+<td>Redirect URL after successful payment</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>CANCEL_URL</code></td>
+<td>Redirect URL after cancelled payment</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>GOOGLE_SERVICE_ACCOUNT_JSON</code></td>
+<td>Full Google service account credentials (JSON)</td>
+<td><strong>YES — CRITICAL</strong></td>
+</tr>
+<tr>
+<td><code>SPREADSHEET_ID</code></td>
+<td>Target Google Sheet ID</td>
+<td>Low sensitivity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-considerations">Security Considerations</h3>
+<p><strong>Stripe secret key:</strong> This key can create charges, refund payments, and access customer data. It must never appear in frontend code, git repositories, or client-accessible locations. It is stored exclusively in Lambda's encrypted environment variables.</p>
+<p><strong>Stripe webhook secret:</strong> Used to verify that webhook requests genuinely come from Stripe. If compromised, an attacker could send fake "donation received" events. Stored in Lambda environment variables only.</p>
+<p><strong>Google service account credentials:</strong> This JSON blob grants write access to the newsletter Google Sheet. It should never be exposed to the frontend. It is stored as a Lambda environment variable.</p>
+<p><strong>CORS reasoning:</strong> The Lambda explicitly whitelists allowed origins rather than using <code>*</code>. This prevents other websites from making requests to the Lambda endpoints on behalf of users. The whitelist includes only <code>localhost:5173</code> (development) and the S3 bucket URL (production).</p>
+<p><strong>S3 bucket access control:</strong> The bucket allows <code>s3:GetObject</code> for all principals (<code>*</code>). This is intentional — the website must be publicly readable. There are no write permissions for anonymous users. Only authenticated AWS users with appropriate IAM permissions can upload files to the bucket.</p>
+<p><strong>What stays in Lambda vs. what is frontend-safe:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>What belongs there</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lambda env vars</td>
+<td>Stripe secret key, webhook secret, Google credentials, spreadsheet ID</td>
+</tr>
+<tr>
+<td>Frontend env vars</td>
+<td>Sanity project ID, dataset, API version, Lambda URL (all public)</td>
+</tr>
+<tr>
+<td>Neither (hardcoded)</td>
+<td>Contact email, S3 URL in Lambda CORS whitelist</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<div class="section-break"></div><h2 id="9-known-issues-lessons-learned"><span class="section-number">9.</span> Known Issues &amp; Lessons Learned</h2>
+<hr class="section-rule">
+<h3 id="local-vs-s3-success-url-mismatch">Local vs S3 Success URL Mismatch</h3>
+<p>The Stripe checkout <code>success_url</code> and <code>cancel_url</code> are configured via Lambda environment variables. During development, if these point to the S3 production URL, successful test donations will redirect the browser to the S3 site rather than <code>localhost:5173</code>. This can be confusing during development.</p>
+<div class="callout callout-note"><div class="callout-label">Decision</div><p>The success/cancel URLs are kept as production URLs in Lambda. Local testing of the full payment flow requires either temporarily changing the Lambda environment variables or accepting the redirect to the production site.</p></div>
+<h3 id="stripe-redirect-debugging">Stripe Redirect Debugging</h3>
+<p>When testing Stripe checkout locally, the redirect flow is:
+1. Local frontend → Lambda → Stripe checkout page → back to <code>SUCCESS_URL</code></p>
+<p>If <code>SUCCESS_URL</code> points to S3, the user lands on the production site after payment. The <code>session_id</code> query parameter arrives correctly, but this can create confusion during development. One approach would be to make the success/cancel URLs dynamic (passed from the frontend), but this was intentionally avoided to prevent URL manipulation in the payment flow.</p>
+<h3 id="lambda-timeout-considerations">Lambda Timeout Considerations</h3>
+<p>The Lambda function performs three different operations with varying latency profiles:</p>
+<ul>
+<li><strong>Stripe checkout creation:</strong> Fast (typically &lt;1 second). Stripe's API is quick.</li>
+<li><strong>Webhook processing:</strong> Fast (just logging). No external calls after signature verification.</li>
+<li><strong>Newsletter signup:</strong> Potentially slower. Requires Google service account authentication and a Google Sheets API call. Cold starts combined with Google API latency can push this to 3–5 seconds.</li>
+</ul>
+<p>The default Lambda timeout (3 seconds) may not be sufficient for newsletter signups on cold starts. Increasing the timeout to 10–15 seconds is recommended.</p>
+<h3 id="cors-configuration-decisions">CORS Configuration Decisions</h3>
+<p>CORS is handled at the application level within the Lambda function rather than through API Gateway or CloudFront configuration. This keeps the architecture simple (one Lambda Function URL, no additional AWS services), but means:</p>
+<ul>
+<li>Every endpoint must include CORS headers in responses.</li>
+<li>The allowed origins list is hardcoded in <code>lambda/index.mjs</code>. Adding a new frontend origin requires a code deployment.</li>
+<li>There is no wildcard — this is intentional for security, but means any new deployment URL must be added to the whitelist.</li>
+</ul>
+<h3 id="static-hosting-tradeoffs">Static Hosting Tradeoffs</h3>
+<p><strong>Advantages realized:</strong>
+- Zero hosting cost (within S3 free tier for typical traffic)
+- No server management
+- Inherent DDoS resistance (S3 absorbs traffic)</p>
+<p><strong>Tradeoffs accepted:</strong>
+- No server-side rendering — all content is fetched client-side, which means slower initial page loads compared to SSR
+- No HTTP → HTTPS redirect without CloudFront (the S3 website endpoint serves HTTP only)
+- S3 website hosting does not support custom domains with HTTPS without CloudFront
+- SPA routing requires the error document workaround, which means all 404s return a 200</p>
+<h3 id="removing-fake-blog-stats">Removing Fake Blog Stats</h3>
+<p>The blog system originally included views, likes, and comments counts in the blog card UI. These were removed because there was no backend system to track or store these metrics. Displaying hardcoded or fake numbers would mislead users. The blog cards now show only the actual metadata available: title, excerpt, author, date, read time, and categories.</p>
+<h3 id="cms-publishing-delays">CMS Publishing Delays</h3>
+<p>Sanity uses a CDN (<code>useCdn: true</code> in the client configuration). After publishing content, there can be a brief delay (typically 5–30 seconds) before the CDN reflects the updated content. This is a standard CDN behavior.</p>
+<p>For immediate visibility during content editing, the Sanity client could be configured with <code>useCdn: false</code>, but this would increase API load and latency for all users. The current configuration prioritizes performance for end users over instant publishing visibility.</p>
+<h3 id="build-cache-issues">Build Cache Issues</h3>
+<p>Vite's build process caches assets with content-based hashes. When deploying to S3, old cached files may persist if <code>--delete</code> is not used with <code>aws s3 sync</code>. Browser caching can also serve stale assets. The hashed filenames handle most cache invalidation automatically, but <code>index.html</code> itself is not hashed and should be served with appropriate cache headers (short TTL or no-cache).</p>
+<hr />
+<div class="section-break"></div><h2 id="10-maintenance-future-improvements"><span class="section-number">10.</span> Maintenance &amp; Future Improvements</h2>
+<hr class="section-rule">
+<h3 id="how-to-add-new-cms-sections">How to Add New CMS Sections</h3>
+<ol>
+<li><strong>Create a schema file</strong> in <code>sanity-studio/schemaTypes/</code>. Follow the existing patterns — use <code>defineType</code> and <code>defineField</code>. Example for a new "FAQ" section:
+   ```javascript
+   // sanity-studio/schemaTypes/faq.js
+   import {defineField, defineType} from 'sanity'</li>
+</ol>
+<p>export default defineType({
+     name: 'faq',
+     title: 'FAQ',
+     type: 'document',
+     fields: [
+       defineField({ name: 'question', title: 'Question', type: 'string', validation: (Rule) =&gt; Rule.required() }),
+       defineField({ name: 'answer', title: 'Answer', type: 'text', validation: (Rule) =&gt; Rule.required() }),
+       defineField({ name: 'order', title: 'Order', type: 'number' }),
+       defineField({ name: 'isActive', title: 'Active', type: 'boolean', initialValue: true }),
+     ],
+   })
+   ```</p>
+<ol>
+<li>
+<p><strong>Register it</strong> in <code>sanity-studio/schemaTypes/index.ts</code>:
+   <code>typescript
+   import faq from './faq'
+   export const schemaTypes = [ ...existingSchemas, faq ]</code></p>
+</li>
+<li>
+<p><strong>Add it to the sidebar</strong> in <code>sanity-studio/sanity.config.ts</code> under the <code>structureTool</code> items.</p>
+</li>
+<li>
+<p><strong>Add a GROQ query</strong> in <code>src/lib/sanityQueries.js</code>:
+   <code>javascript
+   export const FAQ_QUERY = `*[_type == "faq" &amp;&amp; isActive == true] | order(order asc){ _id, question, answer }`;</code></p>
+</li>
+<li>
+<p><strong>Create a React component</strong> to fetch and render the data.</p>
+</li>
+<li>
+<p><strong>Deploy the updated Sanity Studio</strong> with <code>npx sanity deploy</code>.</p>
+</li>
+<li>
+<p><strong>Rebuild and redeploy the frontend</strong> to include the new component.</p>
+</li>
+</ol>
+<h3 id="how-to-add-new-lambda-endpoints">How to Add New Lambda Endpoints</h3>
+<ol>
+<li>
+<p><strong>Add a new route handler</strong> in <code>lambda/index.mjs</code> following the existing pattern:
+   <code>javascript
+   if (method === 'POST' &amp;&amp; path === '/new-endpoint') {
+     // Your logic here
+     return {
+       statusCode: 200,
+       headers: { ...cors, 'Content-Type': 'application/json' },
+       body: JSON.stringify({ result: 'data' }),
+     };
+   }</code></p>
+</li>
+<li>
+<p><strong>Add the route before the fallback 404 block</strong> at the end of the handler.</p>
+</li>
+<li>
+<p><strong>Repackage and deploy</strong> the Lambda function.</p>
+</li>
+<li>
+<p>No CORS changes needed unless you add a new frontend origin. The existing CORS configuration applies to all routes.</p>
+</li>
+</ol>
+<h3 id="how-to-scale-the-backend">How to Scale the Backend</h3>
+<p>The current architecture handles moderate traffic well. For growth:</p>
+<ol>
+<li>
+<p><strong>Lambda concurrency:</strong> Lambda scales automatically. For burst traffic, configure provisioned concurrency to avoid cold starts.</p>
+</li>
+<li>
+<p><strong>Move newsletter storage:</strong> Google Sheets has API rate limits (60 requests per minute per user). For higher newsletter signup volume, migrate to DynamoDB, RDS, or a dedicated email service (Mailchimp, SendGrid).</p>
+</li>
+<li>
+<p><strong>Add CloudFront:</strong> Place a CloudFront distribution in front of the S3 bucket for HTTPS support, custom domain, global CDN caching, and DDoS protection.</p>
+</li>
+<li>
+<p><strong>Split Lambda functions:</strong> If the single Lambda grows complex, split it into separate functions per route — one for Stripe checkout, one for webhooks, one for newsletter. This allows independent scaling, deployment, and error isolation.</p>
+</li>
+<li>
+<p><strong>Add monitoring:</strong> Configure CloudWatch alarms for Lambda errors, Stripe webhook failures, and response latency.</p>
+</li>
+</ol>
+<h3 id="how-to-add-authentication">How to Add Authentication</h3>
+<p>The current site has no user authentication. To add it:</p>
+<ol>
+<li>
+<p><strong>AWS Cognito</strong> — Add a Cognito User Pool for user registration/login. Use Cognito's hosted UI or build custom forms. Protect Lambda endpoints by verifying Cognito JWT tokens.</p>
+</li>
+<li>
+<p><strong>Sanity authentication</strong> — Sanity Studio already requires authentication for CMS access. No changes needed there.</p>
+</li>
+<li>
+<p><strong>Protected routes</strong> — In the React app, create an <code>AuthProvider</code> context that wraps the router. Redirect unauthenticated users away from protected pages.</p>
+</li>
+</ol>
+<h3 id="how-to-migrate-to-full-backend-hosting">How to Migrate to Full Backend Hosting</h3>
+<p>If the project outgrows static hosting + Lambda:</p>
+<ol>
+<li>
+<p><strong>Next.js migration</strong> — The React components can be migrated to Next.js with minimal changes. This enables server-side rendering, API routes (replacing Lambda), and incremental static regeneration.</p>
+</li>
+<li>
+<p><strong>AWS infrastructure changes:</strong></p>
+</li>
+<li>Replace S3 static hosting with an EC2 instance, ECS container, or AWS App Runner</li>
+<li>Move Lambda logic into the application server</li>
+<li>
+<p>Add a load balancer for HTTPS termination and traffic distribution</p>
+</li>
+<li>
+<p><strong>Keep Sanity</strong> — The headless CMS works identically regardless of frontend hosting strategy. The GROQ queries and Sanity client code need no changes.</p>
+</li>
+<li>
+<p><strong>Keep Stripe</strong> — Stripe integration code moves from Lambda to the application server. The webhook endpoint URL changes, requiring an update in the Stripe Dashboard.</p>
+</li>
+</ol>
+    </div>
+</body>
+</html>

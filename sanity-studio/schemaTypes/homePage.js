@@ -4,7 +4,6 @@ export default defineType({
   name: 'homePage',
   title: 'Home Page',
   type: 'document',
-  __experimental_actions: ['update', 'publish'],
   groups: [
     {name: 'hero', title: 'Hero Section'},
     {name: 'mission', title: 'Mission Section'},
@@ -22,6 +21,7 @@ export default defineType({
       type: 'string',
       group: 'hero',
       initialValue: 'Empowering Communities Through AI',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'heroSubtitle',
@@ -30,6 +30,7 @@ export default defineType({
       group: 'hero',
       initialValue:
         'GAICOM bridges the gap between cutting-edge generative AI and the communities that stand to benefit the most. We provide education, resources, and hands-on support to make AI accessible for everyone.',
+      validation: (Rule) => Rule.required().min(10).max(500),
     }),
     defineField({
       name: 'heroCtaText',
@@ -37,6 +38,7 @@ export default defineType({
       type: 'string',
       group: 'hero',
       initialValue: 'Sign Up for Newsletter',
+      validation: (Rule) => Rule.required().min(2).max(40),
     }),
     // Mission
     defineField({
@@ -45,6 +47,7 @@ export default defineType({
       type: 'string',
       group: 'mission',
       initialValue: 'AI for Every Community',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'missionSubheading',
@@ -53,20 +56,51 @@ export default defineType({
       group: 'mission',
       initialValue:
         'We believe generative AI should be accessible, understandable, and beneficial for all. GAICOM provides the education, tools, and support communities need to thrive in an AI-driven world.',
+      validation: (Rule) => Rule.required().min(10).max(500),
     }),
     defineField({
       name: 'missionAudiences',
       title: 'Mission Audiences',
       type: 'array',
       group: 'mission',
+      description: 'Target audiences for the mission section',
+      validation: (Rule) => Rule.max(6),
       of: [
         {
           type: 'object',
           fields: [
-            defineField({name: 'title', title: 'Title', type: 'string'}),
-            defineField({name: 'description', title: 'Description', type: 'text'}),
-            defineField({name: 'icon', title: 'Icon Name', type: 'string', description: 'Icon identifier: community, professional, student, business'}),
-            defineField({name: 'order', title: 'Order', type: 'number'}),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (Rule) => Rule.required().min(2).max(50),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              validation: (Rule) => Rule.required().min(10).max(300),
+            }),
+            defineField({
+              name: 'icon',
+              title: 'Icon Name',
+              type: 'string',
+              description: 'Icon identifier: community, professional, student, business',
+              options: {
+                list: [
+                  {title: 'Community', value: 'community'},
+                  {title: 'Professional', value: 'professional'},
+                  {title: 'Student', value: 'student'},
+                  {title: 'Business', value: 'business'},
+                ],
+              },
+            }),
+            defineField({
+              name: 'order',
+              title: 'Order',
+              type: 'number',
+              validation: (Rule) => Rule.integer().positive(),
+            }),
           ],
           preview: {
             select: {title: 'title', subtitle: 'description'},
@@ -81,6 +115,7 @@ export default defineType({
       type: 'string',
       group: 'vision',
       initialValue: 'A Future Where AI Lifts Everyone',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     // Examples
     defineField({
@@ -89,6 +124,7 @@ export default defineType({
       type: 'string',
       group: 'examples',
       initialValue: 'AI in Action',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'examplesSubheading',
@@ -97,20 +133,43 @@ export default defineType({
       group: 'examples',
       initialValue:
         'Discover how communities and organizations are already leveraging generative AI to transform their work and create new possibilities.',
+      validation: (Rule) => Rule.max(500),
     }),
     defineField({
       name: 'examples',
       title: 'Examples',
       type: 'array',
       group: 'examples',
+      description: 'Examples of AI in action',
+      validation: (Rule) => Rule.max(8),
       of: [
         {
           type: 'object',
           fields: [
-            defineField({name: 'icon', title: 'Icon (Emoji)', type: 'string'}),
-            defineField({name: 'title', title: 'Title', type: 'string'}),
-            defineField({name: 'description', title: 'Description', type: 'text'}),
-            defineField({name: 'order', title: 'Order', type: 'number'}),
+            defineField({
+              name: 'icon',
+              title: 'Icon (Emoji)',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              validation: (Rule) => Rule.required().min(2).max(80),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              validation: (Rule) => Rule.required().min(10).max(300),
+            }),
+            defineField({
+              name: 'order',
+              title: 'Order',
+              type: 'number',
+              validation: (Rule) => Rule.integer().positive(),
+            }),
           ],
           preview: {
             select: {title: 'title', icon: 'icon'},
@@ -128,12 +187,14 @@ export default defineType({
       type: 'string',
       group: 'testimonials',
       initialValue: 'What Our Community Says',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'testimonialsSubheading',
       title: 'Testimonials Subheading',
       type: 'text',
       group: 'testimonials',
+      validation: (Rule) => Rule.max(300),
     }),
     // CTA
     defineField({
@@ -142,6 +203,7 @@ export default defineType({
       type: 'string',
       group: 'cta',
       initialValue: 'Ready to Shape the Future with AI?',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'ctaSubheading',
@@ -150,6 +212,7 @@ export default defineType({
       group: 'cta',
       initialValue:
         'Join GAICOM and help build a community where everyone benefits from the power of generative AI. Your support makes a difference.',
+      validation: (Rule) => Rule.required().min(10).max(500),
     }),
     // Newsletter
     defineField({
@@ -158,6 +221,7 @@ export default defineType({
       type: 'string',
       group: 'newsletter',
       initialValue: 'Stay in the Loop',
+      validation: (Rule) => Rule.required().min(3).max(100),
     }),
     defineField({
       name: 'newsletterSubheading',
@@ -166,6 +230,7 @@ export default defineType({
       group: 'newsletter',
       initialValue:
         'Subscribe to our newsletter and never miss an update on workshops, resources, and community events.',
+      validation: (Rule) => Rule.required().min(10).max(500),
     }),
   ],
   preview: {

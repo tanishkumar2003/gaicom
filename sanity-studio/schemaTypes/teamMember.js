@@ -9,31 +9,39 @@ export default defineType({
       name: 'name',
       title: 'Name',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().min(2).max(100),
     }),
     defineField({
       name: 'initials',
       title: 'Initials',
       type: 'string',
-      validation: (Rule) => Rule.max(3),
+      description: 'e.g. "JS" for John Smith. Used as image fallback',
+      validation: (Rule) => [
+        Rule.required().error('Initials are required'),
+        Rule.min(1).max(3).error('Initials must be 1-3 characters'),
+        Rule.uppercase().error('Initials must be uppercase'),
+      ],
     }),
     defineField({
       name: 'image',
       title: 'Photo',
       type: 'image',
       options: {hotspot: true},
-      validation: (Rule) => Rule.required(),
+      description: 'Professional headshot photo',
+      validation: (Rule) => Rule.required().error('A photo is required for every team member'),
     }),
     defineField({
       name: 'bio',
       title: 'Bio',
       type: 'text',
-      validation: (Rule) => Rule.required(),
+      description: 'Short biography (10-500 characters)',
+      validation: (Rule) => Rule.required().min(10).max(500),
     }),
     defineField({
       name: 'socialLinks',
       title: 'Social Links',
       type: 'array',
+      description: 'Optional social media and web links',
       of: [
         {
           type: 'object',
@@ -42,6 +50,7 @@ export default defineType({
               name: 'platform',
               title: 'Platform',
               type: 'string',
+              validation: (Rule) => Rule.required().error('Platform is required for each social link'),
               options: {
                 list: [
                   {title: 'LinkedIn', value: 'linkedin'},
@@ -51,7 +60,12 @@ export default defineType({
                 ],
               },
             }),
-            defineField({name: 'url', title: 'URL', type: 'url'}),
+            defineField({
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              validation: (Rule) => Rule.required().error('URL is required for each social link'),
+            }),
           ],
           preview: {
             select: {title: 'platform', subtitle: 'url'},
@@ -63,11 +77,27 @@ export default defineType({
       name: 'order',
       title: 'Order',
       type: 'number',
+      description: 'Display position. Must be a unique positive integer if provided',
+      validation: (Rule) => [
+        Rule.integer().positive().error('Order must be a positive integer'),
+        Rule.custom(async (order, context) => {
+          if (order == null) return true
+          const client = context.getClient({apiVersion: '2024-01-01'})
+          const id = (context.document._id || '').replace(/^drafts\./, '')
+          const count = await client.fetch(
+            `count(*[_type == "teamMember" && order == $order && !(_id in [$draftId, $publishedId])])`,
+            {order, draftId: `drafts.${id}`, publishedId: id},
+          )
+          if (count > 0) return `Another team member already uses order ${order}`
+          return true
+        }),
+      ],
     }),
     defineField({
       name: 'isActive',
       title: 'Active',
       type: 'boolean',
+      description: 'Only active team members are displayed on the site',
       initialValue: true,
     }),
   ],
@@ -83,10 +113,12 @@ export default defineType({
       title: 'name',
       media: 'image',
       order: 'order',
+      isActive: 'isActive',
     },
-    prepare({title, media, order}) {
+    prepare({title, media, order, isActive}) {
+      const status = isActive === false ? ' [INACTIVE]' : ''
       return {
-        title: `${order ?? '?'}. ${title}`,
+        title: `${order ?? '?'}. ${title}${status}`,
         media,
       }
     },
